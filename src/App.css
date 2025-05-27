@@ -1,0 +1,22 @@
+.app {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 20px;
+}
+
+nav a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+
+nav a:hover {
+  color: #A0522D; /* Sienna color from your design */
+}

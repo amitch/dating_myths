@@ -1,0 +1,228 @@
+{
+  "tasks": [
+    {
+      "id": "1.1",
+      "title": "Initialize React project with Vite",
+      "description": "Use Vite to create a new React project as the foundation for the application.",
+      "dependencies": [],
+      "priority": "high",
+      "estimated_time": "0.5 hours"
+    },
+    {
+      "id": "1.2",
+      "title": "Install and configure React Router v6",
+      "description": "Add React Router v6 for client-side routing to navigate between the Intro, Quiz, and Results pages.",
+      "dependencies": ["1.1"],
+      "priority": "high",
+      "estimated_time": "0.5 hours"
+    },
+    {
+      "id": "1.3",
+      "title": "Set up Emotion for styling",
+      "description": "Install and configure Emotion for CSS-in-JS to enable styled components and theming.",
+      "dependencies": ["1.1"],
+      "priority": "high",
+      "estimated_time": "0.5 hours"
+    },
+    {
+      "id": "1.4",
+      "title": "Integrate Framer Motion",
+      "description": "Install Framer Motion to add animations such as fade-ins for headers and buttons.",
+      "dependencies": ["1.1"],
+      "priority": "high",
+      "estimated_time": "0.5 hours"
+    },
+    {
+      "id": "1.5",
+      "title": "Configure ESLint with Airbnb rules",
+      "description": "Set up ESLint with the Airbnb style guide to enforce code quality and consistency.",
+      "dependencies": ["1.1"],
+      "priority": "high",
+      "estimated_time": "1 hour"
+    },
+    {
+      "id": "1.6",
+      "title": "Set up PostCSS with autoprefixer",
+      "description": "Configure PostCSS with autoprefixer for CSS processing to ensure cross-browser compatibility.",
+      "dependencies": ["1.1"],
+      "priority": "high",
+      "estimated_time": "1 hour"
+    },
+    {
+      "id": "2",
+      "title": "Implement design system",
+      "description": "Define the color palette (Sienna #A0522D, Steel Blue #4682B4, Lavender Blush #FFF0F5, Pale Violet Red #DB7093, Dark Slate Gray #2F4F4F), typography (Poppins/Montserrat), and create reusable styled components (e.g., buttons, cards, inputs) using Emotion.",
+      "dependencies": ["1.3"],
+      "priority": "high",
+      "estimated_time": "6 hours"
+    },
+    {
+      "id": "3",
+      "title": "Integrate SVGs",
+      "description": "Add provided SVG files (rangoli, mandala, lotus, etc.) to the assets folder and create components or utilities to use them in the UI.",
+      "dependencies": ["1.1"],
+      "priority": "medium",
+      "estimated_time": "3 hours"
+    },
+    {
+      "id": "4",
+      "title": "Implement global state with context and sessionStorage",
+      "description": "Create a React context with useReducer to manage global state (user name, current area, answers) and sync it with sessionStorage using useEffect for persistence across page refreshes.",
+      "dependencies": ["1.1"],
+      "priority": "high",
+      "estimated_time": "5 hours"
+    },
+    {
+      "id": "5",
+      "title": "Set up routing",
+      "description": "Configure React Router with routes: '/' for IntroPage, '/quiz/:areaId' for QuizPage (dynamic for 5 areas), and '/results' for ResultsPage; include navigation logic based on state.",
+      "dependencies": ["1.2", "4"],
+      "priority": "high",
+      "estimated_time": "3 hours"
+    },
+    {
+      "id": "6",
+      "title": "Build IntroPage",
+      "description": "Develop the IntroPage component with a welcome message featuring a rangoli SVG header, a validated name input, and a 'Start Quiz' button that saves the name to context and navigates to '/quiz/1' with fade-in animations.",
+      "dependencies": ["2", "3", "4", "5"],
+      "priority": "medium",
+      "estimated_time": "4 hours"
+    },
+    {
+      "id": "7.1",
+      "title": "Create QuizPage component",
+      "description": "Set up the basic structure of the QuizPage component to handle dynamic area-based quiz rendering.",
+      "dependencies": ["5"],
+      "priority": "high",
+      "estimated_time": "1 hour"
+    },
+    {
+      "id": "7.2",
+      "title": "Load questions from JSON",
+      "description": "Import the provided quiz JSON file and filter questions based on the areaId from the route parameter.",
+      "dependencies": ["7.1"],
+      "priority": "high",
+      "estimated_time": "1 hour"
+    },
+    {
+      "id": "7.3",
+      "title": "Render questions with checkboxes",
+      "description": "Display 3 questions per area with animated checkboxes for multiple-choice answers, styled using the design system.",
+      "dependencies": ["7.2", "2"],
+      "priority": "high",
+      "estimated_time": "2 hours"
+    },
+    {
+      "id": "7.4",
+      "title": "Implement progress bar",
+      "description": "Add a styled progress bar indicating the current area (e.g., 1 of 5) with animations.",
+      "dependencies": ["7.1", "2"],
+      "priority": "high",
+      "estimated_time": "1 hour"
+    },
+    {
+      "id": "7.5",
+      "title": "Add 'Next' button with logic",
+      "description": "Implement the 'Next' button, disabled until all questions are answered, to trigger navigation to the next area or results.",
+      "dependencies": ["7.3", "4"],
+      "priority": "high",
+      "estimated_time": "2 hours"
+    },
+    {
+      "id": "7.6",
+      "title": "Save answers to context and sessionStorage",
+      "description": "Update the global state with selected answers and sync them to sessionStorage for persistence.",
+      "dependencies": ["7.5", "4"],
+      "priority": "high",
+      "estimated_time": "1 hour"
+    },
+    {
+      "id": "7.7",
+      "title": "Handle navigation to next area or results",
+      "description": "Implement logic to navigate to the next area ('/quiz/:nextAreaId') or '/results' after the last area, preventing revisits to previous areas.",
+      "dependencies": ["7.5", "5"],
+      "priority": "high",
+      "estimated_time": "2 hours"
+    },
+    {
+      "id": "8",
+      "title": "Implement utility functions",
+      "description": "Create pure functions: calculateScores(answers) for total and area scores, getStrongestWeakestAreas(areaScores) for analysis, and getTips(weakestArea) for personalized tips.",
+      "dependencies": [],
+      "priority": "medium",
+      "estimated_time": "4 hours"
+    },
+    {
+      "id": "9.1",
+      "title": "Create ResultsPage component",
+      "description": "Set up the basic structure of the ResultsPage component to display quiz outcomes.",
+      "dependencies": ["5"],
+      "priority": "medium",
+      "estimated_time": "1 hour"
+    },
+    {
+      "id": "9.2",
+      "title": "Retrieve answers and calculate scores",
+      "description": "Fetch answers from context and use utility functions to compute total and area-specific scores.",
+      "dependencies": ["9.1", "4", "8"],
+      "priority": "medium",
+      "estimated_time": "1 hour"
+    },
+    {
+      "id": "9.3",
+      "title": "Render rangoli progress wheel",
+      "description": "Create an SVG-based rangoli progress wheel with dynamic segments colored by area scores and animated fade-in.",
+      "dependencies": ["9.2", "3"],
+      "priority": "medium",
+      "estimated_time": "3 hours"
+    },
+    {
+      "id": "9.4",
+      "title": "Display scores and title",
+      "description": "Show the total score, individual area scores, and an assigned title based on the total score, styled consistently.",
+      "dependencies": ["9.2", "2"],
+      "priority": "medium",
+      "estimated_time": "1 hour"
+    },
+    {
+      "id": "9.5",
+      "title": "Show personalized tips",
+      "description": "Display three personalized tips in styled cards based on the weakest area, using utility functions.",
+      "dependencies": ["9.2", "2", "8"],
+      "priority": "medium",
+      "estimated_time": "2 hours"
+    },
+    {
+      "id": "9.6",
+      "title": "Add styled screenshot prompt",
+      "description": "Implement a visually appealing screenshot prompt with styling and animation to encourage sharing.",
+      "dependencies": ["9.1", "2", "3"],
+      "priority": "medium",
+      "estimated_time": "1 hour"
+    },
+    {
+      "id": "10",
+      "title": "Implement error handling",
+      "description": "Add error messages: in IntroPage for empty name input on 'Start Quiz' click, and in QuizPage for attempting to proceed without answering all questions.",
+      "dependencies": ["6", "7.5"],
+      "priority": "low",
+      "estimated_time": "2 hours"
+    },
+    {
+      "id": "11",
+      "title": "Testing and debugging",
+      "description": "Test the application across devices for functionality, responsiveness, and WCAG 2.1 accessibility (contrast, ARIA labels), and debug issues with state or navigation.",
+      "dependencies": ["6", "7.7", "9.6", "10"],
+      "priority": "high",
+      "estimated_time": "10 hours"
+    },
+    {
+      "id": "12",
+      "title": "Deployment",
+      "description": "Deploy the application to Vercel, including setting up the project, configuring build settings, and verifying the live site.",
+      "dependencies": ["11"],
+      "priority": "medium",
+      "estimated_time": "2 hours"
+    }
+  ]
+}
