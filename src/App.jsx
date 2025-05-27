@@ -1,5 +1,14 @@
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
+import { QuizProvider } from './context/QuizContext';
+import Layout from './components/layout/Layout';
+
+// Pages
+import IntroPage from './pages/IntroPage';
+import QuizPage from './pages/QuizPage';
+import ResultsPage from './pages/ResultsPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 const AppContainer = styled(motion.div)`
   max-width: 1200px;
@@ -14,21 +23,26 @@ const AppContainer = styled(motion.div)`
 
 function App() {
   return (
-    <AppContainer
-      data-testid="app-container"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-    >
-      <motion.div
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <h1>Dating Myths Quiz</h1>
-        <p>Welcome to the dating myths quiz!</p>
-      </motion.div>
-    </AppContainer>
+    <Router>
+      <QuizProvider>
+        <AppContainer
+          data-testid="app-container"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <Layout>
+            <Routes>
+              <Route path="/" element={<IntroPage />} />
+              <Route path="/quiz/:areaId" element={<QuizPage />} />
+              <Route path="/results" element={<ResultsPage />} />
+              <Route path="/404" element={<NotFoundPage />} />
+              <Route path="*" element={<Navigate to="/404" replace />} />
+            </Routes>
+          </Layout>
+        </AppContainer>
+      </QuizProvider>
+    </Router>
   );
 }
 

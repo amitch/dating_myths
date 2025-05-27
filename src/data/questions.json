@@ -1,0 +1,38 @@
+{
+  "1": [
+    {
+      "id": "q1",
+      "text": "What is your favorite color?",
+      "options": [
+        { "id": "a", "text": "Red" },
+        { "id": "b", "text": "Blue" }
+      ]
+    },
+    {
+      "id": "q2",
+      "text": "What is your favorite animal?",
+      "options": [
+        { "id": "a", "text": "Dog" },
+        { "id": "b", "text": "Cat" }
+      ]
+    }
+  ],
+  "2": [
+    {
+      "id": "q3",
+      "text": "What is your favorite season?",
+      "options": [
+        { "id": "a", "text": "Spring" },
+        { "id": "b", "text": "Summer" }
+      ]
+    },
+    {
+      "id": "q4",
+      "text": "What is your favorite food?",
+      "options": [
+        { "id": "a", "text": "Pizza" },
+        { "id": "b", "text": "Burger" }
+      ]
+    }
+  ]
+}

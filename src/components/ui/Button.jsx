@@ -45,7 +45,7 @@ export const SecondaryButton = styled(Button)`
   color: ${({ theme }) => theme.colors.sienna};
   
   &:hover {
-    background-color: ${({ theme => theme.colors.lavenderBlush};
+    background-color: ${({ theme }) => theme.colors.lavenderBlush};
     color: ${({ theme }) => theme.colors.sienna};
   }
 `;
