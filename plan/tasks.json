@@ -171,17 +171,6 @@
     },
     {
       "id": "6.3",
-      "title": "Include non-Indian divorced spotlight",
-      "description": {
-        "overview": "Add a spotlight for non-Indian divorced, later-in-life daters.",
-        "story_ids": ["ST-101"],
-        "implementation_details": "Extend Spotlight component with: 'Divorced and starting fresh? Your life’s story is your spark—dive into dating!' Use Steel Blue #4682B4 text on Lavender Blush #FFF0F5, floral SVG (Pale Violet Red #DB7093). Hide on mobile via media queries."
-      },
-      "dependencies": ["6.1", "3"],
-      "priority": "medium"
-    },
-    {
-      "id": "6.4",
       "title": "Optimize Intro page for mobile",
       "description": {
         "overview": "Ensure Intro page is responsive and uncluttered on mobile, prioritizing key elements.",
