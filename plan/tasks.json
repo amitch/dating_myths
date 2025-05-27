@@ -59,7 +59,7 @@
     {
       "id": "3",
       "title": "Integrate SVGs",
-      "description": "Add provided SVG files (rangoli, mandala, lotus, etc.) to the assets folder and create components or utilities to use them in the UI.",
+      "description": "Add provided SVG files (rangoli, lotus, lamp_diya, etc.) to the assets folder and create components or utilities to use them in the UI.",
       "dependencies": ["1.1"],
       "priority": "medium",
       "estimated_time": "3 hours"

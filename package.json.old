@@ -8,10 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --fix",
-    "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "format": "prettier --write \"**/*.{js,jsx,json,md}\""
   },
   "dependencies": {
     "react": "^19.1.0",
@@ -25,7 +22,7 @@
     "@emotion/styled": "^11.14.0",
     "@eslint/js": "^9.27.0",
     "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^14.3.1",
+    "@testing-library/react": "^14.2.1",
     "@testing-library/user-event": "^14.6.1",
     "@types/jest": "^29.5.12",
     "@types/react": "^19.1.2",
@@ -47,26 +44,5 @@
     "jest-environment-jsdom": "^29.7.0",
     "postcss": "^8.5.3",
     "vite": "^6.3.5"
-  },
-  "jest": {
-    "testEnvironment": "jsdom",
-    "setupFilesAfterEnv": ["<rootDir>/src/setupTests.js"],
-    "moduleNameMapper": {
-      "^@/(.*)$": "<rootDir>/src/$1",
-      "\\.(css|less|scss|sass)$": "identity-obj-proxy"
-    },
-    "transform": {
-      "^.+\\.(js|jsx)$": "babel-jest"
-    },
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/dist/"
-    ],
-    "collectCoverage": true,
-    "collectCoverageFrom": ["src/**/*.{js,jsx}"],
-    "coveragePathIgnorePatterns": [
-      "/node_modules/",
-      "/src/setupTests.js"
-    ]
   }
 }

@@ -1,5 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from '@emotion/react';
 import { theme } from './theme';
@@ -7,17 +7,21 @@ import App from './App';
 import QuizPage from './pages/QuizPage';
 import ResultsPage from './pages/ResultsPage';
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+const rootElement = document.getElementById('root');
+const root = createRoot(rootElement);
+
+root.render(
+  <StrictMode>
     <ThemeProvider theme={theme}>
       <Router>
         <Routes>
           <Route path="/" element={<App />}>
             <Route index element={<QuizPage />} />
+            <Route path="quiz" element={<QuizPage />} />
             <Route path="results" element={<ResultsPage />} />
           </Route>
         </Routes>
       </Router>
     </ThemeProvider>
-  </React.StrictMode>
+  </StrictMode>
 );
