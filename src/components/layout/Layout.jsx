@@ -62,7 +62,12 @@ const Layout = ({ children }) => {
         <Footer>
           <p>© {new Date().getFullYear()} Dating Myths Quiz. All rights reserved.</p>
           <p>
-            Made with ❤️ by <a href="#">Your Name</a>
+            Made with ❤️ by <a href="#" onClick={(e) => {
+              e.preventDefault();
+              const user = 'amitc2033';
+              const domain = 'gmail.com';
+              window.location.href = `mailto:${user}@${domain}`;
+            }}>Amit Chaudhary</a>
           </p>
         </Footer>
       </AppContainer>

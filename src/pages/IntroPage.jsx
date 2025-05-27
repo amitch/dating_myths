@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useForm } from '../hooks/useForm';
+import useForm from '../hooks/useForm';
 import { useMediaQuery } from '../hooks/useMediaQuery';
 import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
@@ -7,9 +7,6 @@ import { useEffect } from 'react';
 
 // Import components directly to avoid circular dependencies
 import { Button } from '../components/ui/Button';
-import MythBlurb from '../components/MythBlurb';
-import EncouragementBanner from '../components/EncouragementBanner';
-import Spotlight from '../components/Spotlight';
 import QuizPreview from '../components/QuizPreview';
 
 const IntroContainer = styled.div`
@@ -88,7 +85,7 @@ function IntroPage() {
       </Title>
       
       <Subtitle>
-        Let's rethink dating together—there may be more than one right answer, so choose all that feel true to you!
+        Think dating needs a Bollywood sparkle or a perfect rishta match? Let's test it—as in life, there may be more than one right answer!
       </Subtitle>
       
       <Form onSubmit={handleSubmit}>
@@ -109,18 +106,7 @@ function IntroPage() {
         </Button>
       </Form>
       
-      <MythBlurb />
-      
       <QuizPreview />
-      
-      {!isMobile && (
-        <>
-          <Spotlight variant="indian" />
-          <Spotlight variant="nonIndian" />
-        </>
-      )}
-      
-      <EncouragementBanner onStartClick={handleSubmit} />
     </IntroContainer>
   );
 }

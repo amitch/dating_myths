@@ -171,39 +171,6 @@
     },
     {
       "id": "6.3",
-      "title": "Implement dating myths blurb",
-      "description": {
-        "overview": "Add a dating myths blurb to set the quiz’s tone with Indian coloring.",
-        "story_ids": ["ST-101"],
-        "implementation_details": "Build MythBlurb component with: 'Think dating needs a Bollywood sparkle or a perfect rishta match? Let’s bust those myths!' Use rangoli SVG border (Sienna #A0522D, Pale Violet Red #DB7093), Steel Blue #4682B4 text on Lavender Blush #FFF0F5. Apply Framer Motion fade-in (0.3s). Ensure WCAG 2.1 contrast."
-      },
-      "dependencies": ["6.1", "3"],
-      "priority": "medium"
-    },
-    {
-      "id": "6.4",
-      "title": "Add encouragement banner",
-      "description": {
-        "overview": "Include an encouragement banner to motivate quiz participation.",
-        "story_ids": ["ST-101"],
-        "implementation_details": "Create EncouragementBanner component with: 'Ready to rediscover dating? You’re enough—jump in!' Use Dark Slate Gray #2F4F4F text on Pale Violet Red #DB7093 background, lotus SVG (Steel Blue #4682B4). Add secondary 'Start Quiz' button (Sienna #A0522D) with Framer Motion hover scale (0.3s)."
-      },
-      "dependencies": ["6.1", "3"],
-      "priority": "high"
-    },
-    {
-      "id": "6.5",
-      "title": "Include Indian divorced spotlight",
-      "description": {
-        "overview": "Add a spotlight for Indian divorced, later-in-life daters with cultural coloring.",
-        "story_ids": ["ST-101"],
-        "implementation_details": "Build Spotlight component with: 'Divorced and dating later in life? Your journey’s strength is your charm—find connection over chai.' Use mandala SVG background (Sienna #A0522D, Pale Violet Red #DB7093), Dark Slate Gray #2F4F4F text on Lavender Blush #FFF0F5. Hide on mobile via media queries."
-      },
-      "dependencies": ["6.1", "3"],
-      "priority": "medium"
-    },
-    {
-      "id": "6.6",
       "title": "Include non-Indian divorced spotlight",
       "description": {
         "overview": "Add a spotlight for non-Indian divorced, later-in-life daters.",
@@ -214,7 +181,7 @@
       "priority": "medium"
     },
     {
-      "id": "6.7",
+      "id": "6.4",
       "title": "Optimize Intro page for mobile",
       "description": {
         "overview": "Ensure Intro page is responsive and uncluttered on mobile, prioritizing key elements.",
