@@ -1,37 +1,131 @@
-{
+  {
   "1": [
     {
       "id": "q1",
-      "text": "What is your favorite color?",
+      "text": "Which of these dating myths have you heard before?",
+      "description": "Select all that apply",
       "options": [
-        { "id": "a", "text": "Red" },
-        { "id": "b", "text": "Blue" }
+        { "id": "a", "text": "Opposites attract and make better matches" },
+        { "id": "b", "text": "Men should always make the first move" },
+        { "id": "c", "text": "Playing hard to get is the best strategy" },
+        { "id": "d", "text": "There's a 'perfect' person for everyone" },
+        { "id": "e", "text": "You should know if they're 'the one' immediately" }
       ]
     },
     {
       "id": "q2",
-      "text": "What is your favorite animal?",
+      "text": "Which of these statements about online dating do you think are true?",
+      "description": "Select all that apply",
       "options": [
-        { "id": "a", "text": "Dog" },
-        { "id": "b", "text": "Cat" }
+        { "id": "a", "text": "Online dating is only for people who can't meet others in real life" },
+        { "id": "b", "text": "Profiles with professional photos get more matches" },
+        { "id": "c", "text": "You can tell if there's chemistry just from messaging" },
+        { "id": "d", "text": "Dating apps are just for hookups" },
+        { "id": "e", "text": "The more options you have, the harder it is to choose" }
       ]
     }
   ],
   "2": [
     {
       "id": "q3",
-      "text": "What is your favorite season?",
+      "text": "What do you think about the idea of 'the one'?",
+      "description": "Select all that apply",
       "options": [
-        { "id": "a", "text": "Spring" },
-        { "id": "b", "text": "Summer" }
+        { "id": "a", "text": "There's one perfect person for everyone" },
+        { "id": "b", "text": "Love at first sight is real" },
+        { "id": "c", "text": "If it's meant to be, it will happen naturally" },
+        { "id": "d", "text": "You have to kiss a lot of frogs first" },
+        { "id": "e", "text": "Timing is everything in relationships" }
       ]
     },
     {
       "id": "q4",
-      "text": "What is your favorite food?",
+      "text": "Which of these statements about dating after divorce do you believe?",
+      "description": "Select all that apply",
       "options": [
-        { "id": "a", "text": "Pizza" },
-        { "id": "b", "text": "Burger" }
+        { "id": "a", "text": "Divorced people have too much baggage" },
+        { "id": "b", "text": "You should wait a year before dating again" },
+        { "id": "c", "text": "No one wants to date someone with kids" },
+        { "id": "d", "text": "Your next relationship will be just like your last one" },
+        { "id": "e", "text": "It's harder to find someone good when you're older" }
+      ]
+    }
+  ],
+  "3": [
+    {
+      "id": "q5",
+      "text": "What are your thoughts on dating rules?",
+      "description": "Select all that apply",
+      "options": [
+        { "id": "a", "text": "Don't accept a date after Wednesday for the weekend" },
+        { "id": "b", "text": "Wait at least 3 days before calling after a date" },
+        { "id": "c", "text": "Don't talk about exes on the first date" },
+        { "id": "d", "text": "Splitting the bill means they're not interested" },
+        { "id": "e", "text": "You should wait to have sex until you're exclusive" }
+      ]
+    },
+    {
+      "id": "q6",
+      "text": "Which of these dating deal-breakers do you believe in?",
+      "description": "Select all that apply",
+      "options": [
+        { "id": "a", "text": "They must want/have the same things in life" },
+        { "id": "b", "text": "Opposites attract but don't last" },
+        { "id": "c", "text": "If they don't text back quickly, they're not interested" },
+        { "id": "d", "text": "Age gaps over 5 years never work" },
+        { "id": "e", "text": "You should have all the same interests" }
+      ]
+    }
+  ],
+  "4": [
+    {
+      "id": "q7",
+      "text": "What do you think about dating expectations?",
+      "description": "Select all that apply",
+      "options": [
+        { "id": "a", "text": "Men should pay for dates" },
+        { "id": "b", "text": "Women should be pursued" },
+        { "id": "c", "text": "You should be married by a certain age" },
+        { "id": "d", "text": "Living together before marriage leads to divorce" },
+        { "id": "e", "text": "You should be completely over your ex before dating" }
+      ]
+    },
+    {
+      "id": "q8",
+      "text": "Which of these statements about love do you believe?",
+      "description": "Select all that apply",
+      "options": [
+        { "id": "a", "text": "Love means never having to say you're sorry" },
+        { "id": "b", "text": "If you love someone, let them go" },
+        { "id": "c", "text": "Love conquers all" },
+        { "id": "d", "text": "You complete me" },
+        { "id": "e", "text": "Love means never having to change" }
+      ]
+    }
+  ],
+  "5": [
+    {
+      "id": "q9",
+      "text": "What are your thoughts on relationship milestones?",
+      "description": "Select all that apply",
+      "options": [
+        { "id": "a", "text": "You should be exclusive after 3 dates" },
+        { "id": "b", "text": "Saying 'I love you' too soon is a red flag" },
+        { "id": "c", "text": "You should wait at least a year before getting engaged" },
+        { "id": "d", "text": "Living together before marriage is necessary" },
+        { "id": "e", "text": "You should be friends before dating" }
+      ]
+    },
+    {
+      "id": "q10",
+      "text": "Which of these statements about finding love do you believe?",
+      "description": "Select all that apply",
+      "options": [
+        { "id": "a", "text": "You'll find love when you stop looking" },
+        { "id": "b", "text": "There are plenty of fish in the sea" },
+        { "id": "c", "text": "All the good ones are taken" },
+        { "id": "d", "text": "You have to love yourself before someone else can love you" },
+        { "id": "e", "text": "Timing is everything in relationships" }
       ]
     }
   ]

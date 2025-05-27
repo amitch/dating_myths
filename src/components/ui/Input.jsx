@@ -7,7 +7,7 @@ export const Input = styled.input`
   font-size: 1rem;
   color: ${({ theme }) => theme.colors.darkSlateGray};
   background-color: ${({ theme }) => theme.colors.lavenderBlush};
-  border: 2px solid ${({ theme => theme.colors.sienna};
+  border: 2px solid ${({ theme }) => theme.colors.sienna};
   border-radius: 4px;
   transition: all 0.3s ease;
   

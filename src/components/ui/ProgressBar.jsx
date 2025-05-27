@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
 
-export const ProgressContainer = styled.div`
+const ProgressContainer = styled.div`
   width: 100%;
   margin: 1.5rem 0;
 `;
 
-export const ProgressInfo = styled.div`
+const ProgressInfo = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 0.5rem;
@@ -13,19 +13,23 @@ export const ProgressInfo = styled.div`
   color: ${({ theme }) => theme.colors.darkSlateGray};
 `;
 
-export const ProgressWrapper = styled.div`
-  height: 8px;
-  background-color: ${({ theme }) => theme.colors.lavenderBlush};
-  border-radius: 4px;
+const ProgressWrapper = styled.div`
+  height: 6px;
+  background-color: ${({ theme }) => theme.colors.lightGray};
+  border-radius: 3px;
   overflow: hidden;
 `;
 
-export const ProgressBar = styled.div`
+const ProgressBarFill = styled.div`
   height: 100%;
-  width: ${({ progress }) => `${progress}%`};
-  background-color: ${({ theme }) => theme.colors.steelBlue};
-  border-radius: 4px;
-  transition: width 0.5s ease-in-out;
+  width: ${({ value, max }) => `${(value / max) * 100}%`};
+  background: linear-gradient(
+    to right,
+    ${({ theme }) => theme.colors.paleVioletRed},
+    ${({ theme }) => theme.colors.steelBlue}
+  );
+  border-radius: 3px;
+  transition: width 0.3s ease-out;
   position: relative;
   
   &::after {
@@ -51,3 +55,23 @@ export const ProgressBar = styled.div`
     }
   }
 `;
+
+function ProgressBar({ value, max = 100, showPercentage = false, className }) {
+  const percentage = Math.min(100, Math.max(0, (value / max) * 100));
+  
+  return (
+    <div className={className}>
+      {showPercentage && (
+        <ProgressInfo>
+          <span>Progress</span>
+          <span>{Math.round(percentage)}%</span>
+        </ProgressInfo>
+      )}
+      <ProgressWrapper>
+        <ProgressBarFill value={value} max={max} />
+      </ProgressWrapper>
+    </div>
+  );
+}
+
+export default ProgressBar;

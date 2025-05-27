@@ -8,4 +8,5 @@ export { Card, CardHeader, CardBody, CardFooter } from './Card';
 export { Input, InputLabel, InputError } from './Input';
 
 // Progress
-export { ProgressContainer, ProgressInfo, ProgressWrapper, ProgressBar } from './ProgressBar';
+import ProgressBar from './ProgressBar';
+export { ProgressBar };
