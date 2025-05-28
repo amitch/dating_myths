@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 const PreviewContainer = styled(motion.div)`
   background-color: ${({ theme }) => theme.colors.lavenderBlush};
-  border: 2px solid ${({ theme }) => theme.colors.steelBlue};
+  border: 2px solid ${({ theme }) => theme.colors.paleVioletRed};
   border-radius: 8px;
   padding: 1.5rem;
   margin: 1.5rem 0;
@@ -48,7 +48,7 @@ const OptionText = styled.span`
 `;
 
 const PreviewLabel = styled.div`
-  background-color: ${({ theme }) => theme.colors.steelBlue};
+  background-color: ${({ theme }) => theme.colors.paleVioletRed};
   color: white;
   display: inline-block;
   padding: 0.25rem 0.75rem;

@@ -60,6 +60,14 @@ const QuestionText = styled.h2`
   line-height: 1.5;
 `;
 
+const QuestionDescription = styled.div`
+  font-size: 1rem;
+  color: ${({ theme }) => theme.colors.steelBlue};
+  font-style: italic;
+  margin-top: 0.5rem;
+  font-weight: 500;
+`;
+
 const OptionsList = styled.div`
   display: flex;
   flex-direction: column;
@@ -71,7 +79,7 @@ const OptionButton = styled(motion.button)`
   width: 100%;
   padding: 1rem 1.25rem;
   border: 2px solid ${({ selected, theme }) => 
-    selected ? theme.colors.steelBlue : theme.colors.lightGray};
+    selected ? theme.colors.paleVioletRed : theme.colors.lightGray};
   border-radius: 8px;
   background: white;
   text-align: left;
@@ -81,7 +89,7 @@ const OptionButton = styled(motion.button)`
   color: ${({ theme }) => theme.colors.darkSlateGray};
   
   &:hover {
-    border-color: ${({ theme }) => theme.colors.steelBlue};
+    border-color: ${({ theme }) => theme.colors.paleVioletRed};
     background-color: ${({ theme }) => theme.colors.lavenderBlush};
   }
   
@@ -96,83 +104,100 @@ const OptionButton = styled(motion.button)`
 function QuizPage() {
   const { areaId } = useParams();
   const navigate = useNavigate();
-  const { state, dispatch } = useQuiz();
+  const { saveAnswers, completeQuiz } = useQuiz();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState({});
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-
-  // Get questions for the current area
-  const areaQuestions = questionsData[areaId.trim()] || [];
   
-  // Set loading to false once questions are loaded
+  // Debug logs
+  console.log('Rendering QuizPage with areaId:', areaId);
+  console.log('Current question index:', currentQuestion);
+  
+  // Get questions and area name for the current area
+  const { areas, questions } = questionsData;
+  const areaQuestions = questions?.[areaId] || [];
+  const areaName = areas?.[areaId] || `Area ${areaId}`;
+  
+  // Debug logs
+  console.log('Area name:', areaName);
+  console.log('Area questions:', areaQuestions);
+  
+  // Set loading state and validate questions
   useEffect(() => {
     if (areaQuestions.length > 0) {
+      console.log(`Found ${areaQuestions.length} questions for area ${areaId}`);
       setIsLoading(false);
+      setError('');
     } else {
+      console.error(`No questions found for area ${areaId}`);
       setError('No questions found for this area. Please try again.');
       setIsLoading(false);
     }
   }, [areaId, areaQuestions]);
 
-  // Load saved answers when component mounts or area changes
-  useEffect(() => {
-    setCurrentQuestion(0);
-    
-    // Load previously saved answers for this area
-    if (state.answers && state.answers[areaId]) {
-      setSelectedOptions(state.answers[areaId]);
-    } else {
-      setSelectedOptions({});
-    }
-    
-    setError('');
-  }, [areaId, state.answers]);
-
-  const handleOptionSelect = (questionId, optionId) => {
-    setSelectedOptions(prev => ({
-      ...prev,
-      [questionId]: optionId
-    }));
+  const handleOptionSelect = (question, optionId) => {
+    setSelectedOptions(prev => {
+      const currentSelections = prev[question.id] || [];
+      const isMultiSelect = question.description?.toLowerCase().includes('select all');
+      
+      if (isMultiSelect) {
+        // Toggle the selected state for multi-select
+        const newSelections = currentSelections.includes(optionId)
+          ? currentSelections.filter(id => id !== optionId)
+          : [...currentSelections, optionId];
+        
+        return {
+          ...prev,
+          [question.id]: newSelections
+        };
+      } else {
+        // Single select behavior
+        return {
+          ...prev,
+          [question.id]: [optionId] // Store as array for consistency
+        };
+      }
+    });
+    // Clear any previous errors when user makes a selection
     setError('');
   };
 
   const handleNext = () => {
     // Validate all questions are answered
-    const allAnswered = areaQuestions.every(q => {
-      const hasAnswer = selectedOptions[q.id] !== undefined;
-      if (!hasAnswer) {
-        setError('Please answer all questions before continuing.');
-      }
-      return hasAnswer;
-    });
+    const unansweredQuestions = areaQuestions.filter(
+      q => !selectedOptions[q.id] || selectedOptions[q.id].length === 0
+    );
     
-    if (!allAnswered) return;
-
-    // Save answers to context
-    dispatch({
-      type: 'SAVE_ANSWERS',
-      payload: {
-        areaId: areaId,
-        answers: selectedOptions
-      }
-    });
-
-    // Navigate to next area or results
+    if (unansweredQuestions.length > 0) {
+      setError('Please answer all questions before continuing');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    
+    setError('');
+    saveAnswers(areaId, selectedOptions);
+    
     const nextArea = parseInt(areaId) + 1;
     if (nextArea <= TOTAL_AREAS) {
       navigate(`/quiz/${nextArea}`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
-      dispatch({ type: 'COMPLETE_QUIZ' });
+      completeQuiz();
       navigate('/results');
     }
   };
 
   const handlePrevious = () => {
     if (currentQuestion > 0) {
+      // Go to previous question in the same area
       setCurrentQuestion(prev => prev - 1);
+      setError('');
     } else if (parseInt(areaId) > 1) {
-      navigate(`/quiz/${parseInt(areaId) - 1}`);
+      // Go to previous area's last question
+      const prevArea = parseInt(areaId) - 1;
+      const prevAreaQuestions = questionsData[prevArea] || [];
+      navigate(`/quiz/${prevArea}`, { state: { lastQuestion: true } });
     }
   };
 
@@ -181,65 +206,66 @@ function QuizPage() {
   const currentAreaNum = parseInt(areaId);
   const totalAreas = TOTAL_AREAS;
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <QuizContainer>
-      <ProgressBar value={progress} max={100} />
-      
+      <h1>{areaName}</h1>
       <QuestionCounter>
         Area {areaId} of {TOTAL_AREAS}
       </QuestionCounter>
 
       {error && <ErrorMessage>{error}</ErrorMessage>}
 
-      {isLoading ? (
-        <div>Loading questions...</div>
-      ) : areaQuestions.length > 0 ? (
-        <>
-          <QuestionCard
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            <QuestionText>
-              {currentQuestion + 1}. {areaQuestions[currentQuestion]?.text}
-            </QuestionText>
-            
-            <OptionsList>
-              {areaQuestions[currentQuestion]?.options.map((option) => (
-                <OptionButton
-                  key={option.id}
-                  onClick={() => handleOptionSelect(areaQuestions[currentQuestion].id, option.id)}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  selected={selectedOptions[areaQuestions[currentQuestion].id] === option.id}
-                >
-                  {option.text}
-                </OptionButton>
-              ))}
-            </OptionsList>
-          </QuestionCard>
+      {areaQuestions.map((question, index) => (
+        <QuestionCard
+          key={question.id}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: index * 0.1 }}
+        >
+          <QuestionText>
+            {question.text}
+            {question.description && (
+              <QuestionDescription>{question.description}</QuestionDescription>
+            )}
+          </QuestionText>
 
-          <NavigationContainer>
-            <Button 
-              onClick={handlePrevious}
-              disabled={parseInt(areaId) === 1 && currentQuestion === 0}
-              variant="outline"
-            >
-              {currentQuestion === 0 ? 'Previous Area' : 'Previous'}
-            </Button>
-            
-            <Button 
-              onClick={handleNext}
-              variant="primary"
-            >
-              {currentAreaNum >= totalAreas ? 'See Results →' : 'Next →'}
-            </Button>
-          </NavigationContainer>
-        </>
-      ) : (
-        <ErrorMessage>No questions available for this area.</ErrorMessage>
-      )}
+          <OptionsList>
+            {question.options.map(option => (
+              <OptionButton
+                key={option.id}
+                selected={selectedOptions[question.id]?.includes(option.id)}
+                onClick={() => handleOptionSelect(question, option.id)}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                {option.text}
+              </OptionButton>
+            ))}
+          </OptionsList>
+        </QuestionCard>
+      ))}
+
+      <NavigationContainer>
+        <Button
+          onClick={() => {
+            if (parseInt(areaId) > 1) {
+              navigate(`/quiz/${parseInt(areaId) - 1}`);
+            } else {
+              navigate('/');
+            }
+          }}
+          variant="secondary"
+        >
+          {parseInt(areaId) === 1 ? 'Back to Start' : 'Previous Area'}
+        </Button>
+        <Button onClick={handleNext}>
+          {parseInt(areaId) === TOTAL_AREAS ? 'See Results' : 'Next Area'}
+        </Button>
+      </NavigationContainer>
     </QuizContainer>
   );
 }

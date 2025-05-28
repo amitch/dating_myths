@@ -12,7 +12,7 @@ const Container = styled(motion.div)`
 `;
 
 const Title = styled.h1`
-  color: ${({ theme }) => theme.colors.sienna};
+  color: ${({ theme }) => theme.colors.steelBlue};
   font-size: 3rem;
   margin-bottom: 1rem;
 `;

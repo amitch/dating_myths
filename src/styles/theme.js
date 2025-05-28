@@ -1,9 +1,9 @@
 const theme = {
   colors: {
-    primary: '#A0522D', // Sienna
-    secondary: '#4682B4', // Steel Blue
+    primary: '#4682B4', // Steel Blue
+    secondary: '#DB7093', // Pale Violet Red
     background: '#FFF0F5', // Lavender Blush
-    accent: '#DB7093', // Pale Violet Red
+    accent: '#A0522D', // Sienna
     text: '#2F4F4F', // Dark Slate Gray
     white: '#FFFFFF',
   },

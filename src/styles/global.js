@@ -51,12 +51,12 @@ export const GlobalStyles = () => (
       }
       
       a {
-        color: ${theme.colors.steelBlue};
+        color: ${theme.colors.paleVioletRed};
         text-decoration: none;
         transition: color 0.3s ease;
         
         &:hover {
-          color: ${theme.colors.sienna};
+          color: ${theme.colors.steelBlue};
           text-decoration: underline;
         }
       }

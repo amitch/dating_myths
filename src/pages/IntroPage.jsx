@@ -3,11 +3,9 @@ import useForm from '../hooks/useForm';
 import { useMediaQuery } from '../hooks/useMediaQuery';
 import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
-import { useEffect } from 'react';
 
 // Import components directly to avoid circular dependencies
 import { Button } from '../components/ui/Button';
-import QuizPreview from '../components/QuizPreview';
 
 const IntroContainer = styled.div`
   display: flex;
@@ -29,7 +27,7 @@ const Subtitle = styled(motion.p)`
 `;
 
 const Title = styled(motion.h1)`
-  color: ${({ theme }) => theme.colors.sienna};
+  color: ${({ theme }) => theme.colors.steelBlue};
   margin-bottom: 2rem;
 `;
 
@@ -43,7 +41,7 @@ const Form = styled.form`
 
 const Input = styled.input`
   padding: 0.8rem;
-  border: 2px solid ${({ theme }) => theme.colors.sienna};
+  border: 2px solid ${({ theme }) => theme.colors.steelBlue};
   border-radius: 4px;
   font-size: 1rem;
   width: 100%;
@@ -51,7 +49,7 @@ const Input = styled.input`
 
   &:focus {
     outline: none;
-    border-color: ${({ theme }) => theme.colors.steelBlue};
+    border-color: ${({ theme }) => theme.colors.paleVioletRed};
   }
 `;
 
@@ -105,8 +103,6 @@ function IntroPage() {
           Start Quiz
         </Button>
       </Form>
-      
-      <QuizPreview />
     </IntroContainer>
   );
 }

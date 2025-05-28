@@ -7,7 +7,7 @@ export const Input = styled.input`
   font-size: 1rem;
   color: ${({ theme }) => theme.colors.darkSlateGray};
   background-color: ${({ theme }) => theme.colors.lavenderBlush};
-  border: 2px solid ${({ theme }) => theme.colors.sienna};
+  border: 2px solid ${({ theme }) => theme.colors.steelBlue};
   border-radius: 4px;
   transition: all 0.3s ease;
   
@@ -18,8 +18,8 @@ export const Input = styled.input`
   
   &:focus {
     outline: none;
-    border-color: ${({ theme }) => theme.colors.steelBlue};
-    box-shadow: 0 0 0 3px ${({ theme }) => `${theme.colors.steelBlue}40`};
+    border-color: ${({ theme }) => theme.colors.paleVioletRed};
+    box-shadow: 0 0 0 3px ${({ theme }) => `${theme.colors.paleVioletRed}40`};
   }
   
   &:disabled {

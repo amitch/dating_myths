@@ -22,7 +22,7 @@ const ScoreCard = styled.div`
 `;
 
 const Title = styled.h1`
-  color: ${({ theme }) => theme.colors.sienna};
+  color: ${({ theme }) => theme.colors.steelBlue};
   margin-bottom: 1.5rem;
   font-size: 2.2rem;
 `;
@@ -30,7 +30,7 @@ const Title = styled.h1`
 const Score = styled.div`
   font-size: 3rem;
   font-weight: bold;
-  color: ${({ theme }) => theme.colors.steelBlue};
+  color: ${({ theme }) => theme.colors.paleVioletRed};
   margin: 1rem 0;
 `;
 

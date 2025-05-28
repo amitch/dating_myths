@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 
 export const Button = styled(motion.button)`
-  background-color: ${({ theme }) => theme.colors.sienna};
+  background-color: ${({ theme }) => theme.colors.steelBlue};
   color: ${({ theme }) => theme.colors.white};
   font-family: ${({ theme }) => theme.fonts.primary};
   font-size: 1rem;
@@ -22,7 +22,7 @@ export const Button = styled(motion.button)`
   }
   
   &:focus {
-    outline: 2px solid ${({ theme }) => theme.colors.steelBlue};
+    outline: 2px solid ${({ theme }) => theme.colors.paleVioletRed};
     outline-offset: 2px;
   }
   
@@ -41,11 +41,11 @@ export const Button = styled(motion.button)`
 
 export const SecondaryButton = styled(Button)`
   background-color: transparent;
-  border: 2px solid ${({ theme }) => theme.colors.sienna};
-  color: ${({ theme }) => theme.colors.sienna};
+  border: 2px solid ${({ theme }) => theme.colors.steelBlue};
+  color: ${({ theme }) => theme.colors.steelBlue};
   
   &:hover {
     background-color: ${({ theme }) => theme.colors.lavenderBlush};
-    color: ${({ theme }) => theme.colors.sienna};
+    color: ${({ theme }) => theme.colors.steelBlue};
   }
 `;

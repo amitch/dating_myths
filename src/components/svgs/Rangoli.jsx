@@ -7,7 +7,7 @@ const StyledSvg = styled.svg`
   height: auto;
   max-width: 300px;
   margin: 0 auto;
-  fill: ${({ theme, color }) => color || theme.colors.sienna};
+  fill: ${({ theme, color }) => color || theme.colors.steelBlue};
 `;
 
 export const Rangoli = ({ color, ...props }) => (

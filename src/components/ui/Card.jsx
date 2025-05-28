@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 export const Card = styled(motion.div)`
   background-color: ${({ theme }) => theme.colors.lavenderBlush};
-  border: 2px solid ${({ theme }) => theme.colors.sienna};
+  border: 2px solid ${({ theme }) => theme.colors.steelBlue};
   border-radius: 8px;
   padding: 1.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
