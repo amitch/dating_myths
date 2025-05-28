@@ -7,16 +7,9 @@ import { Button, ProgressBar } from '../components/ui';
 import questionsData from '../data/questions.json';
 import useDocumentTitle from '../hooks/useDocumentTitle';
 
-// Constants
-const TOTAL_AREAS = 5; // Total number of quiz areas
-
-const areaNames = {
-  1: 'Dating Myths & Beliefs',
-  2: 'Online Dating',
-  3: 'Relationship Expectations',
-  4: 'Communication & Conflict',
-  5: 'Commitment & Future'
-};
+// Get area names from questions data
+const areaNames = questionsData.areas || {};
+const TOTAL_AREAS = Object.keys(areaNames).length; // Dynamic total number of areas
 
 // Styled Components
 const QuizContainer = styled.div`
@@ -126,9 +119,9 @@ function QuizPage() {
   console.log('Current question index:', currentQuestion);
   
   // Get questions and area name for the current area
-  const { areas, questions } = questionsData;
+  const { questions } = questionsData;
   const areaQuestions = questions?.[areaId] || [];
-  const areaName = areaNames[areaId] || `Area ${areaId}`;
+  const areaName = areaNames[areaId] ? `${areaId}. ${areaNames[areaId]}` : `Area ${areaId}`;
   
   // Debug logs
   console.log('Area name:', areaName);
@@ -148,28 +141,10 @@ function QuizPage() {
   }, [areaId, areaQuestions]);
 
   const handleOptionSelect = (question, optionId) => {
-    setSelectedOptions(prev => {
-      const currentSelections = prev[question.id] || [];
-      const isMultiSelect = question.description?.toLowerCase().includes('select all');
-      
-      if (isMultiSelect) {
-        // Toggle the selected state for multi-select
-        const newSelections = currentSelections.includes(optionId)
-          ? currentSelections.filter(id => id !== optionId)
-          : [...currentSelections, optionId];
-        
-        return {
-          ...prev,
-          [question.id]: newSelections
-        };
-      } else {
-        // Single select behavior
-        return {
-          ...prev,
-          [question.id]: [optionId] // Store as array for consistency
-        };
-      }
-    });
+    setSelectedOptions(prev => ({
+      ...prev,
+      [question.id]: [optionId] // Always store as array with single selection
+    }));
     // Clear any previous errors when user makes a selection
     setError('');
   };

@@ -7,6 +7,7 @@ import { Button } from '../components/ui';
 import { fadeIn } from '../utils/animations';
 import { calculateScores, getStrongestWeakestAreas, getTitle, getTips } from '../utils/quizUtils';
 import useDocumentTitle from '../hooks/useDocumentTitle';
+import questionsData from '../data/questions.json';
 
 const ResultsContainer = styled(motion.div)`
   max-width: 800px;
@@ -116,7 +117,10 @@ const AreaScoresContainer = styled.div`
 
 function ResultsPage() {
   const navigate = useNavigate();
-  const { answers, userName } = useQuiz();
+  const { answers, userName, resetQuiz } = useQuiz();
+  
+  // Get area names from questions data
+  const areaNames = questionsData.areas || {};
   
   // Set initial state
   const [results, setResults] = useState({
@@ -216,20 +220,23 @@ function ResultsPage() {
       
       <ScoreCard>
         <h2>Hello{userName ? `, ${userName}` : ''}!</h2>
-        <div style={{ margin: '1rem 0' }}>
-          <div style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>Your Dating Profile</div>
+        <div style={{ margin: '1.5rem 0' }}>
+          <div style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>
+            Your Dating Myths quiz score:
+          </div>
           <Score>{isNaN(results.totalScore) ? '0' : results.totalScore}/15</Score>
         </div>
         <h3 style={{ 
           color: '#2F4F4F', 
-          margin: '1rem 0',
+          margin: '1.5rem 0 0',
           fontStyle: 'italic',
-          fontWeight: 'normal'
+          fontWeight: 'normal',
+          textAlign: 'center'
         }}>
           {results.totalScore > 0 ? (
             <span>You're a <strong>{results.title}</strong></span>
           ) : (
-            <span>Ready to start your dating journey</span>
+            <span>Enjoy your dating journey's next phase</span>
           )}
         </h3>
       </ScoreCard>
@@ -241,7 +248,7 @@ function ResultsPage() {
             const displayScore = isNaN(score) ? 0 : score;
             return (
               <AreaScore key={areaId}>
-                <span>{areaNames[areaId]}:</span>
+                <span>{areaId}. {areaNames[areaId] || `Area ${areaId}`}:</span>
                 <span>{displayScore}/3</span>
               </AreaScore>
             );
@@ -278,8 +285,8 @@ function ResultsPage() {
           <Button
             onClick={() => {
               // Clear answers and start over
-              localStorage.removeItem('datingMythsQuizState');
-              navigate('/quiz/1');
+              resetQuiz();
+              navigate('/');
             }}
           >
             Retake Quiz

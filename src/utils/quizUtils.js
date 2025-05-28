@@ -20,16 +20,15 @@ export const calculateScores = (answers) => {
   // Calculate scores for each answer
   Object.entries(answers).forEach(([questionId, selectedOptions]) => {
     try {
-      // Extract area ID from question ID (format: 'q1a', 'q2b', etc.)
+      // Extract area ID from question ID (format: 'q1', 'q2', etc.)
       const areaId = parseInt(questionId.match(/q(\d+)/)[1]);
       
-      // Count non-empty selected options for this question
-      const validSelections = Array.isArray(selectedOptions) 
-        ? selectedOptions.filter(opt => opt && opt.trim() !== '').length 
-        : 0;
+      // For single-select, any selection gives full point for that question
+      const hasAnswer = Array.isArray(selectedOptions) && selectedOptions.length > 0 && 
+                      selectedOptions[0] && selectedOptions[0].trim() !== '';
       
-      // Add to area score (max 1 point per question)
-      const questionScore = validSelections > 0 ? 1 : 0;
+      // Each question is worth 1 point
+      const questionScore = hasAnswer ? 1 : 0;
       
       // Ensure areaId is valid (1-5)
       if (areaId >= 1 && areaId <= 5) {
