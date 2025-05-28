@@ -87,6 +87,17 @@ export function QuizProvider({ children }) {
   };
   
   const completeQuiz = () => {
+    // Calculate final score before completing the quiz
+    const totalScore = Object.values(state.areaScores).reduce((sum, score) => sum + (score || 0), 0);
+    
+    // Save final results to local storage for results page
+    const finalResults = {
+      totalScore,
+      areaScores: state.areaScores,
+      completedAt: new Date().toISOString(),
+    };
+    
+    saveToSessionStorage('quizResults', finalResults);
     dispatch({ type: COMPLETE_QUIZ });
   };
 

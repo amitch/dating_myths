@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
 import { useQuiz } from '../context/QuizContext';
-import { Button, ProgressBar } from '../components/ui';
+import { Button, Checkbox, ProgressBar } from '../components/ui';
 import questionsData from '../data/questions.json';
 import useDocumentTitle from '../hooks/useDocumentTitle';
 
@@ -76,29 +76,24 @@ const OptionsList = styled.div`
   gap: 0.75rem;
 `;
 
-const OptionButton = styled(motion.button)`
+const OptionButton = styled(motion.div)`
   display: block;
   width: 100%;
-  padding: 1rem 1.25rem;
-  border: 2px solid ${({ selected, theme }) => 
-    selected ? theme.colors.paleVioletRed : theme.colors.lightGray};
-  border-radius: 8px;
-  background: white;
+  padding: 0.5rem 0;
+  border: none;
+  background: transparent;
   text-align: left;
   cursor: pointer;
   font-size: 1rem;
-  transition: all 0.2s ease;
   color: ${({ theme }) => theme.colors.darkSlateGray};
   
   &:hover {
-    border-color: ${({ theme }) => theme.colors.paleVioletRed};
     background-color: ${({ theme }) => theme.colors.lavenderBlush};
   }
   
   ${({ selected, theme }) =>
     selected &&
     `
-      background-color: ${theme.colors.lavenderBlush};
       font-weight: 500;
     `}
 `;
@@ -161,8 +156,11 @@ function QuizPage() {
       return;
     }
     
+    // Calculate score for this area
+    const score = calculateAreaScore(areaQuestions, selectedOptions);
+    
     setError('');
-    saveAnswers(areaId, selectedOptions);
+    saveAnswers(areaId, selectedOptions, score);
     
     const nextArea = parseInt(areaId) + 1;
     if (nextArea <= TOTAL_AREAS) {
@@ -172,6 +170,36 @@ function QuizPage() {
       completeQuiz();
       navigate('/results');
     }
+  };
+  
+  // Calculate score for the current area
+  const calculateAreaScore = (questions, answers) => {
+    let score = 0;
+    
+    questions.forEach(question => {
+      const selected = answers[question.id] || [];
+      let hasCorrect = false;
+      let hasIncorrect = false;
+      
+      // Check each selected option
+      selected.forEach(optionId => {
+        const option = question.options.find(opt => opt.id === optionId);
+        if (option) {
+          if (option.correct) {
+            hasCorrect = true;
+          } else {
+            hasIncorrect = true;
+          }
+        }
+      });
+      
+      // Award point if at least one correct answer and no incorrect answers
+      if (hasCorrect && !hasIncorrect) {
+        score++;
+      }
+    });
+    
+    return score;
   };
 
   const handlePrevious = () => {
@@ -205,30 +233,35 @@ function QuizPage() {
 
       {error && <ErrorMessage>{error}</ErrorMessage>}
 
-      {areaQuestions.map((question, index) => (
+      {areaQuestions.map((question, qIndex) => (
         <QuestionCard
           key={question.id}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: index * 0.1 }}
+          transition={{ delay: qIndex * 0.1 }}
         >
           <QuestionText>
             {question.text}
             {question.description && (
-              <QuestionDescription>{question.description}</QuestionDescription>
+              <QuestionDescription>
+                {question.description}
+              </QuestionDescription>
             )}
           </QuestionText>
-
           <OptionsList>
-            {question.options.map(option => (
+            {question.options.map((option) => (
               <OptionButton
                 key={option.id}
                 selected={selectedOptions[question.id]?.includes(option.id)}
                 onClick={() => handleOptionSelect(question, option.id)}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
               >
-                {option.text}
+                <Checkbox 
+                  checked={selectedOptions[question.id]?.includes(option.id)} 
+                  onChange={() => handleOptionSelect(question, option.id)}
+                  id={`${question.id}-${option.id}`}
+                  name={question.id}
+                  label={option.text}
+                />
               </OptionButton>
             ))}
           </OptionsList>

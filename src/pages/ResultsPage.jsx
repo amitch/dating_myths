@@ -4,10 +4,12 @@ import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
 import { useQuiz } from '../context/QuizContext';
 import { Button } from '../components/ui';
-import { fadeIn } from '../utils/animations';
+import { fadeIn, fadeInUp } from '../utils/animations';
 import { calculateScores, getStrongestWeakestAreas, getTitle, getTips } from '../utils/quizUtils';
 import useDocumentTitle from '../hooks/useDocumentTitle';
 import questionsData from '../data/questions.json';
+import RangoliWheel from '../components/RangoliWheel';
+import ScreenshotPrompt from '../components/ScreenshotPrompt';
 
 const ResultsContainer = styled(motion.div)`
   max-width: 800px;
@@ -18,28 +20,20 @@ const ResultsContainer = styled(motion.div)`
   color: ${({ theme }) => theme.colors.darkSlateGray};
 `;
 
-const ScoreCard = styled.div`
-  background: ${({ theme }) => theme.colors.white};
-  border-radius: 12px;
+const ScoreCard = styled(motion.div)`
+  background: white;
+  border-radius: 16px;
   padding: 2rem;
   margin-bottom: 2rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
-  border: 2px solid ${({ theme }) => theme.colors.sienna};
+  border: 1px solid ${({ theme }) => theme.colors.sienna};
 `;
 
 const Title = styled.h1`
   color: ${({ theme }) => theme.colors.steelBlue};
   margin-bottom: 1.5rem;
   font-size: 2.2rem;
-  text-align: center;
-`;
-
-const Score = styled.div`
-  font-size: 3rem;
-  font-weight: bold;
-  color: ${({ theme }) => theme.colors.paleVioletRed};
-  margin: 1rem 0;
   text-align: center;
 `;
 
@@ -51,25 +45,40 @@ const Subtitle = styled.h2`
   padding-bottom: 0.5rem;
 `;
 
-const ResultText = styled.p`
-  color: ${({ theme }) => theme.colors.darkSlateGray};
-  font-size: 1.1rem;
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
-`;
-
 const TipsList = styled.ul`
   list-style: none;
   padding: 0;
-  margin: 0 0 2rem 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
 `;
 
-const TipItem = styled.li`
+const TipCard = styled(motion.div)`
   background: ${({ theme }) => theme.colors.lavenderBlush};
-  border-left: 4px solid ${({ theme }) => theme.colors.paleVioletRed};
-  padding: 1rem;
-  margin-bottom: 1rem;
-  border-radius: 0 4px 4px 0;
+  border: 1px solid ${({ theme }) => theme.colors.sienna};
+  border-radius: 8px;
+  padding: 1.2rem;
+  position: relative;
+  text-align: left;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  
+  &::before {
+    content: '💡';
+    position: absolute;
+    left: 1rem;
+    top: -0.8rem;
+    background: white;
+    border-radius: 50%;
+    width: 1.6rem;
+    height: 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    border: 1px solid ${({ theme }) => theme.colors.sienna};
+  }
 `;
 
 const Actions = styled.div`
@@ -79,13 +88,13 @@ const Actions = styled.div`
   margin-top: 2rem;
 `;
 
-const areaNames = {
-  1: 'Dating Myths and Beliefs',
-  2: 'Online Dating',
-  3: 'Relationship Expectations',
-  4: 'Communication and Conflict',
-  5: 'Commitment and Future'
-};
+const AreaScoresContainer = styled.div`
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+`;
 
 const AreaScore = styled.div`
   display: flex;
@@ -105,14 +114,6 @@ const AreaScore = styled.div`
     font-weight: bold;
     color: ${({ theme }) => theme.colors.steelBlue};
   }
-`;
-
-const AreaScoresContainer = styled.div`
-  background: white;
-  padding: 1.5rem;
-  border-radius: 12px;
-  margin: 1.5rem 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 `;
 
 function ResultsPage() {
@@ -152,34 +153,12 @@ function ResultsPage() {
     try {
       // Calculate scores
       const { totalScore, areaScores } = calculateScores(answers);
-      
-      // Ensure we have valid scores
-      if (totalScore === 0 && Object.values(areaScores).every(score => score === 0)) {
-        // If no answers were selected, show a friendly message
-        setResults({
-          totalScore: 0,
-          areaScores: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
-          title: 'New to Dating',
-          tips: [
-            'Start by being open to new experiences',
-            'Focus on getting to know people without pressure',
-            'Remember that everyone starts somewhere - take your time'
-          ],
-          strongestArea: 1,
-          weakestArea: 1
-        });
-        return;
-      }
-      
-      // Get strongest/weakest areas
       const { strongestArea, weakestArea } = getStrongestWeakestAreas(areaScores);
       
-      // Get title based on score
+      // Get title and tips based on scores
       const title = getTitle(totalScore);
-      
-      // Get tips for weakest area
       const tips = getTips(weakestArea);
-
+      
       setResults({
         totalScore,
         areaScores,
@@ -190,25 +169,14 @@ function ResultsPage() {
       });
     } catch (error) {
       console.error('Error calculating results:', error);
-      // Fallback to default state if there's an error
-      setResults({
-        totalScore: 0,
-        areaScores: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
-        title: 'New to Dating',
-        tips: [
-          'Start by being open to new experiences',
-          'Focus on getting to know people without pressure',
-          'Remember that everyone starts somewhere - take your time'
-        ],
-        strongestArea: 1,
-        weakestArea: 1
-      });
+      navigate('/');
     }
   }, [answers, navigate]);
-  
-  if (!answers || Object.keys(answers).length === 0) {
-    return null;
-  }
+
+  const handleRetakeQuiz = () => {
+    resetQuiz();
+    navigate('/quiz/1');
+  };
 
   return (
     <ResultsContainer
@@ -216,78 +184,79 @@ function ResultsPage() {
       animate="visible"
       variants={fadeIn}
     >
-      <Title>Your Dating Profile Results</Title>
+      <ScreenshotPrompt />
       
-      <ScoreCard>
+      <ScoreCard
+        variants={fadeInUp}
+        initial="hidden"
+        animate="visible"
+        transition={{ delay: 0.2 }}
+      >
         <h2>Hello{userName ? `, ${userName}` : ''}!</h2>
-        <div style={{ margin: '1.5rem 0' }}>
-          <div style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>
-            Your Dating Myths quiz score:
-          </div>
-          <Score>{isNaN(results.totalScore) ? '0' : results.totalScore}/15</Score>
-        </div>
+        <RangoliWheel 
+          score={isNaN(results.totalScore) ? 0 : results.totalScore} 
+          maxScore={15} 
+        />
         <h3 style={{ 
           color: '#2F4F4F', 
           margin: '1.5rem 0 0',
           fontStyle: 'italic',
           fontWeight: 'normal',
-          textAlign: 'center'
+          textAlign: 'center',
+          fontSize: '1.4rem'
         }}>
           {results.totalScore > 0 ? (
-            <span>You're a <strong>{results.title}</strong></span>
+            <span>You're a <strong style={{ color: '#A0522D' }}>{results.title}</strong></span>
           ) : (
             <span>Enjoy your dating journey's next phase</span>
           )}
         </h3>
       </ScoreCard>
-      
+
       <ScoreCard>
         <Subtitle>Your Scores by Area</Subtitle>
         <AreaScoresContainer>
-          {Object.entries(results.areaScores).map(([areaId, score]) => {
-            const displayScore = isNaN(score) ? 0 : score;
+          {Object.entries(results.areaScores).map(([areaId, score]) => (
+            <AreaScore key={areaId}>
+              <span>{areaId}. {areaNames[areaId] || `Area ${areaId}`}:</span>
+              <span>{isNaN(score) ? 0 : score}/3</span>
+            </AreaScore>
+          ))}
+        </AreaScoresContainer>
+      </ScoreCard>
+
+      <ScoreCard>
+        <Subtitle>Your Personalized Tips</Subtitle>
+        <TipsList>
+          {results.tips.map((tip, index) => {
+            // Get the area name for the weakest area tip
+            const areaName = areaNames[results.weakestArea] || `Area ${results.weakestArea}`;
+            const formattedTip = tip.replace('{area}', areaName);
+            
             return (
-              <AreaScore key={areaId}>
-                <span>{areaId}. {areaNames[areaId] || `Area ${areaId}`}:</span>
-                <span>{displayScore}/3</span>
-              </AreaScore>
+              <TipCard
+                key={index}
+                variants={fadeInUp}
+                initial="hidden"
+                animate="visible"
+                transition={{ delay: 0.3 + index * 0.1 }}
+              >
+                {formattedTip}
+              </TipCard>
             );
           })}
-        </AreaScoresContainer>
-        
-        <Subtitle>Your Strengths</Subtitle>
-        <p>You scored highest in <strong>{areaNames[results.strongestArea]}</strong>.</p>
-        
-        <Subtitle>Areas for Growth</Subtitle>
-        <p>Consider working on: <strong>{areaNames[results.weakestArea]}</strong></p>
-        
-        <Subtitle>Personalized Tips</Subtitle>
-        <TipsList>
-          {results.tips.map((tip, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 * index }}
-            >
-              <TipItem>{tip}</TipItem>
-            </motion.div>
-          ))}
         </TipsList>
-        
+
         <Actions>
           <Button
-            onClick={() => navigate('/')}
             variant="secondary"
+            onClick={() => navigate('/')}
           >
             Back to Start
           </Button>
           <Button
-            onClick={() => {
-              // Clear answers and start over
-              resetQuiz();
-              navigate('/');
-            }}
+            variant="primary"
+            onClick={handleRetakeQuiz}
           >
             Retake Quiz
           </Button>
