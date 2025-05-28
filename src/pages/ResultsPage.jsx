@@ -5,7 +5,13 @@ import styled from '@emotion/styled';
 import { useQuiz } from '../context/QuizContext';
 import { Button } from '../components/ui';
 import { fadeIn, fadeInUp } from '../utils/animations';
-import { calculateScores, getStrongestWeakestAreas, getTitle, getTips } from '../utils/quizUtils';
+import { 
+  calculateScores, 
+  getStrongestWeakestAreas, 
+  getTitle, 
+  getTips, 
+  getMaxScore 
+} from '../utils/quizUtils';
 import useDocumentTitle from '../hooks/useDocumentTitle';
 import questionsData from '../data/questions.json';
 import RangoliWheel from '../components/RangoliWheel';
@@ -128,13 +134,11 @@ function ResultsPage() {
     totalScore: 0,
     areaScores: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
     title: 'New to Dating',
-    tips: [
-      'Start by being open to new experiences',
-      'Focus on getting to know people without pressure',
-      'Remember that everyone starts somewhere - take your time'
-    ],
+    description: 'Start your journey to better dating knowledge!',
+    tips: [],
     strongestArea: 1,
-    weakestArea: 1
+    weakestArea: 1,
+    maxScore: 15
   });
   
   // Set document title based on results
@@ -143,6 +147,9 @@ function ResultsPage() {
       ? `Results: ${results.title}` 
       : 'Quiz Results'
   );
+  
+  // Get max score from utils
+  const maxScore = getMaxScore();
 
   useEffect(() => {
     if (!answers || Object.keys(answers).length === 0) {
@@ -156,16 +163,18 @@ function ResultsPage() {
       const { strongestArea, weakestArea } = getStrongestWeakestAreas(areaScores);
       
       // Get title and tips based on scores
-      const title = getTitle(totalScore);
+      const { title, description } = getTitle(totalScore);
       const tips = getTips(weakestArea);
       
       setResults({
         totalScore,
         areaScores,
         title,
+        description,
         tips,
         strongestArea,
-        weakestArea
+        weakestArea,
+        maxScore
       });
     } catch (error) {
       console.error('Error calculating results:', error);
@@ -195,22 +204,24 @@ function ResultsPage() {
         <h2>Hello{userName ? `, ${userName}` : ''}!</h2>
         <RangoliWheel 
           score={isNaN(results.totalScore) ? 0 : results.totalScore} 
-          maxScore={15} 
+          maxScore={results.maxScore} 
         />
         <h3 style={{ 
           color: '#2F4F4F', 
-          margin: '1.5rem 0 0',
-          fontStyle: 'italic',
-          fontWeight: 'normal',
-          textAlign: 'center',
-          fontSize: '1.4rem'
+          margin: '1rem 0 0.5rem',
+          fontSize: '1.8rem',
+          fontWeight: 'bold'
         }}>
-          {results.totalScore > 0 ? (
-            <span>You're a <strong style={{ color: '#A0522D' }}>{results.title}</strong></span>
-          ) : (
-            <span>Enjoy your dating journey's next phase</span>
-          )}
+          {results.title}
         </h3>
+        <p style={{
+          color: '#666',
+          fontSize: '1.1rem',
+          marginBottom: '1.5rem',
+          fontStyle: 'italic'
+        }}>
+          {results.description}
+        </p>
       </ScoreCard>
 
       <ScoreCard>

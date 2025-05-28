@@ -1,0 +1,74 @@
+{
+  "maxScore": 15,
+  "titles": [
+    {
+      "minScore": 13,
+      "title": "Dating Guru",
+      "description": "You're a true dating expert with deep insights into modern relationships!"
+    },
+    {
+      "minScore": 10,
+      "title": "Romantic Expert",
+      "description": "You have great dating knowledge and a healthy perspective on relationships!"
+    },
+    {
+      "minScore": 7,
+      "title": "Hopeful Romantic",
+      "description": "You're on the right track with a good understanding of dating dynamics!"
+    },
+    {
+      "minScore": 4,
+      "title": "Casual Dater",
+      "description": "You have some dating experience but there's room to grow!"
+    },
+    {
+      "minScore": 0,
+      "title": "Dating Newbie",
+      "description": "Everyone starts somewhere! Use these tips to improve your dating knowledge."
+    }
+  ],
+  "tipsByArea": {
+    "1": [
+      "Try to be more open to different types of people. Opposites can complement each other!",
+      "Don't put too much pressure on first impressions. Give people a chance to show their true selves.",
+      "Consider that there might be many potential matches, not just one 'perfect' person.",
+      "Remember that love at first sight is rare - deep connections often take time to develop.",
+      "Be open to meeting people outside your usual 'type' - you might be surprised!"
+    ],
+    "2": [
+      "Try updating your profile with recent photos that show your personality.",
+      "Be honest in your profile to attract compatible matches.",
+      "Don't judge potential matches too quickly based on their profile alone.",
+      "Consider that people may present differently online than in person.",
+      "Remember that online chemistry doesn't always translate to in-person chemistry."
+    ],
+    "3": [
+      "Be open about your expectations early in the relationship.",
+      "Remember that healthy relationships involve compromise from both sides.",
+      "Consider that love languages might differ between partners.",
+      "Communicate your needs clearly instead of expecting your partner to guess.",
+      "Understand that relationships require effort from both people to succeed."
+    ],
+    "4": [
+      "Practice active listening in your conversations.",
+      "Try to express your needs clearly and calmly.",
+      "Remember that it's okay to take time to process your thoughts before responding.",
+      "Avoid making assumptions - ask for clarification when needed.",
+      "Use 'I' statements to express how you feel without blaming your partner."
+    ],
+    "5": [
+      "Be open about your long-term goals early in the relationship.",
+      "Remember that commitment levels can grow over time.",
+      "Consider what you truly want from a long-term partnership.",
+      "Discuss important topics like marriage and children when the relationship becomes serious.",
+      "Understand that people's goals and priorities can change over time."
+    ]
+  },
+  "defaultTips": [
+    "Be yourself and have fun getting to know new people!",
+    "Remember that every relationship is a learning experience.",
+    "Stay open to new experiences and perspectives.",
+    "Trust your instincts when something doesn't feel right.",
+    "Don't be too hard on yourself - dating can be challenging for everyone."
+  ]
+}

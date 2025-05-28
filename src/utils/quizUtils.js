@@ -1,4 +1,6 @@
 import questionsData from '../data/questions.json';
+import scoringData from '../data/scoring.json';
+
 
 /**
  * Calculate scores based on user answers
@@ -129,50 +131,31 @@ export const getStrongestWeakestAreas = (areaScores) => {
  * @returns {string[]} - Array of tips
  */
 export const getTips = (weakestArea) => {
-  const tipsByArea = {
-    1: [
-      "Try to be more open to different types of people. Opposites can complement each other!",
-      "Don't put too much pressure on first impressions. Give people a chance to show their true selves.",
-      "Consider that there might be many potential matches, not just one 'perfect' person."
-    ],
-    2: [
-      "Try updating your profile with recent photos that show your personality.",
-      "Be proactive in starting conversations with your matches.",
-      "Consider being more selective with your right swipes to increase match quality."
-    ],
-    3: [
-      "Be open about your expectations early in the relationship.",
-      "Remember that relationships require work from both partners.",
-      "Consider that love languages might differ between partners."
-    ],
-    4: [
-      "Practice active listening in your conversations.",
-      "Try to express your needs clearly and calmly.",
-      "Remember that it's okay to take time to process your thoughts before responding."
-    ],
-    5: [
-      "Be open about your long-term goals early in the relationship.",
-      "Remember that commitment levels can grow over time.",
-      "Consider what you truly want from a long-term partnership."
-    ]
-  };
-  
-  return tipsByArea[weakestArea] || [
-    "Be yourself and have fun getting to know new people!",
-    "Remember that every relationship is a learning experience.",
-    "Stay open to new experiences and perspectives."
-  ];
+  // Get tips for the specific area or return default tips
+  return scoringData.tipsByArea[weakestArea] || scoringData.defaultTips;
 };
 
 /**
  * Get a title based on the total score
  * @param {number} totalScore - User's total score
- * @returns {string} - Title
+ * @returns {Object} - { title, description }
  */
 export const getTitle = (totalScore) => {
-  if (totalScore >= 13) return "Dating Guru";
-  if (totalScore >= 10) return "Romantic Expert";
-  if (totalScore >= 7) return "Hopeful Romantic";
-  if (totalScore >= 4) return "Casual Dater";
-  return "Dating Newbie";
+  // Find the first title where the score meets or exceeds the minScore
+  const result = scoringData.titles.find(
+    (title) => totalScore >= title.minScore
+  ) || { title: 'Unknown', description: '' };
+  
+  return {
+    title: result.title,
+    description: result.description
+  };
+};
+
+/**
+ * Get the maximum possible score
+ * @returns {number} - Maximum possible score
+ */
+export const getMaxScore = () => {
+  return scoringData.maxScore;
 };
