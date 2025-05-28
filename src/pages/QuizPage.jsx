@@ -5,9 +5,18 @@ import styled from '@emotion/styled';
 import { useQuiz } from '../context/QuizContext';
 import { Button, ProgressBar } from '../components/ui';
 import questionsData from '../data/questions.json';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 
 // Constants
 const TOTAL_AREAS = 5; // Total number of quiz areas
+
+const areaNames = {
+  1: 'Dating Myths & Beliefs',
+  2: 'Online Dating',
+  3: 'Relationship Expectations',
+  4: 'Communication & Conflict',
+  5: 'Commitment & Future'
+};
 
 // Styled Components
 const QuizContainer = styled.div`
@@ -103,6 +112,8 @@ const OptionButton = styled(motion.button)`
 
 function QuizPage() {
   const { areaId } = useParams();
+  useDocumentTitle(areaNames[areaId] || 'Quiz');
+  
   const navigate = useNavigate();
   const { saveAnswers, completeQuiz } = useQuiz();
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -117,7 +128,7 @@ function QuizPage() {
   // Get questions and area name for the current area
   const { areas, questions } = questionsData;
   const areaQuestions = questions?.[areaId] || [];
-  const areaName = areas?.[areaId] || `Area ${areaId}`;
+  const areaName = areaNames[areaId] || `Area ${areaId}`;
   
   // Debug logs
   console.log('Area name:', areaName);

@@ -3,6 +3,7 @@ import useForm from '../hooks/useForm';
 import { useMediaQuery } from '../hooks/useMediaQuery';
 import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 
 // Import components directly to avoid circular dependencies
 import { Button } from '../components/ui/Button';
@@ -54,6 +55,7 @@ const Input = styled.input`
 `;
 
 function IntroPage() {
+  useDocumentTitle('Welcome');
   const navigate = useNavigate();
   const isMobile = useMediaQuery('(max-width: 768px)');
   
