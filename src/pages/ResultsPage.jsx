@@ -158,8 +158,18 @@ function ResultsPage() {
     }
 
     try {
-      // Calculate scores
-      const { totalScore, areaScores } = calculateScores(answers);
+      // Transform answers to match the expected format for calculateScores
+      const formattedAnswers = {};
+      Object.entries(answers).forEach(([areaId, areaData]) => {
+        if (areaData && areaData.answers) {
+          Object.entries(areaData.answers).forEach(([questionId, selectedOptions]) => {
+            formattedAnswers[questionId] = selectedOptions;
+          });
+        }
+      });
+
+      // Calculate scores with the formatted answers
+      const { totalScore, areaScores } = calculateScores(formattedAnswers);
       const { strongestArea, weakestArea } = getStrongestWeakestAreas(areaScores);
       
       // Get title and tips based on scores

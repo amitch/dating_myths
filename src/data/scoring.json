@@ -2,29 +2,29 @@
   "maxScore": 15,
   "titles": [
     {
-      "minScore": 13,
-      "title": "Dating Guru",
-      "description": "You're a true dating expert with deep insights into modern relationships!"
+      "minScore": 12,
+      "title": "Insightful Connector",
+      "description": "You bring thoughtful wisdom to dating—your insights shine!"
     },
     {
-      "minScore": 10,
-      "title": "Romantic Expert",
-      "description": "You have great dating knowledge and a healthy perspective on relationships!"
+      "minScore": 9,
+      "title": "Thoughtful Explorer",
+      "description": "You’re navigating dating with care and curiosity—keep exploring!"
     },
     {
-      "minScore": 7,
-      "title": "Hopeful Romantic",
-      "description": "You're on the right track with a good understanding of dating dynamics!"
+      "minScore": 6,
+      "title": "Hopeful Explorer",
+      "description": "You’re on a journey with a hopeful heart—trust your path!"
     },
     {
-      "minScore": 4,
-      "title": "Casual Dater",
-      "description": "You have some dating experience but there's room to grow!"
+      "minScore": 3,
+      "title": "Curious Starter",
+      "description": "You’re just getting started—every step is progress!"
     },
     {
       "minScore": 0,
-      "title": "Dating Newbie",
-      "description": "Everyone starts somewhere! Use these tips to improve your dating knowledge."
+      "title": "Fresh Starter",
+      "description": "Everyone begins somewhere—use these tips to grow your dating confidence."
     }
   ],
   "tipsByArea": {

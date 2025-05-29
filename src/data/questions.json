@@ -1,199 +1,191 @@
 {
   "areas": {
-    "1": "Dating Myths and Beliefs",
-    "2": "Online Dating",
-    "3": "Relationship Expectations",
-    "4": "Communication and Conflict",
-    "5": "Commitment and Future"
+    "1": "First Impressions",
+    "2": "Dating Expectations & Norms",
+    "3": "Communication and Conflict",
+    "4": "Relationship Expectations",
+    "5": "Authentic Vibrant You"
   },
   "questions": {
     "1": [
       {
         "id": "q1",
-        "text": "Which of these dating myths have you heard before?",
+        "text": "Do you need to be charming, funny, or intelligent to make a great first impression?",
         "description": "Select all that apply",
         "options": [
-          { "id": "a", "text": "Opposites attract and make better matches", "correct": false },
-          { "id": "b", "text": "Men should always make the first move", "correct": false },
-          { "id": "c", "text": "Playing hard to get is the best strategy", "correct": false },
-          { "id": "d", "text": "There's a 'perfect' person for everyone", "correct": false },
-          { "id": "e", "text": "You should know if they're 'the one' immediately", "correct": false }
+          { "id": "a", "text": "No, being yourself creates stronger impressions.", "correct": true },
+          { "id": "b", "text": "Yes, charm, humor, and wit are essential.", "correct": false },
+          { "id": "d", "text": "No, sharing your stories connects better than fact-finding.", "correct": true },
+          { "id": "e", "text": "No, authentic vibes and shared values spark bonds.", "correct": true }
         ]
       },
       {
         "id": "q1b",
-        "text": "What do you think about the idea of 'the one'?",
+        "text": "Is dressing elegantly the main way to stand out?",
         "description": "Select all that apply",
         "options": [
-          { "id": "a", "text": "There's one perfect person for everyone", "correct": false },
-          { "id": "b", "text": "Love at first sight is real", "correct": false },
-          { "id": "c", "text": "If it's meant to be, it will happen naturally", "correct": false },
-          { "id": "d", "text": "You have to kiss a lot of frogs first", "correct": false },
-          { "id": "e", "text": "Timing is everything in relationships", "correct": true }
+          { "id": "a", "text": "Not true—being comfortable in your own style speaks equally well.", "correct": true },
+          { "id": "b", "text": "Yes, glamour is a must.", "correct": false },
+          { "id": "c", "text": "No, but your best outfit sets a great wardrobe tone.", "correct": true },
+          { "id": "d", "text": "No way—unless you’re crashing a gala!", "correct": false }
         ]
       },
       {
         "id": "q1c",
-        "text": "Which of these dating rules do you follow?",
+        "text": "What’s a good question to break a date’s silence?",
         "description": "Select all that apply",
         "options": [
-          { "id": "a", "text": "Don't accept a date after Wednesday for the weekend", "correct": false },
-          { "id": "b", "text": "Wait at least 3 days before calling after a date", "correct": false },
-          { "id": "c", "text": "Don't talk about exes on the first date", "correct": true },
-          { "id": "d", "text": "Splitting the bill means they're not interested", "correct": false },
-          { "id": "e", "text": "You should wait to have sex until you're exclusive", "correct": false }
+          { "id": "a", "text": "What family tradition do you cherish?", "correct": true },
+          { "id": "b", "text": "What’s the one dish you’d cook for someone on a date?", "correct": true },
+          { "id": "c", "text": "What do you like most about yourself?", "correct": true },
+          { "id": "d", "text": "Have you tried unique date activities like sip-and-paint?", "correct": true },
+          { "id": "e", "text": "What’s the last book or podcast that hooked you?", "correct": true }
         ]
       }
     ],
     "2": [
       {
         "id": "q2",
-        "text": "Which of these statements about online dating do you think are true?",
+        "text": "How should you approach your first few in-person dates?",
         "description": "Select all that apply",
         "options": [
-          { "id": "a", "text": "Online dating is only for people who can't meet others in real life", "correct": false },
-          { "id": "b", "text": "Profiles with professional photos get more matches", "correct": true },
-          { "id": "c", "text": "You can tell if there's chemistry just from messaging", "correct": false },
-          { "id": "d", "text": "Dating apps are just for hookups", "correct": false },
-          { "id": "e", "text": "The more options you have, the harder it is to choose", "correct": true }
+          { "id": "a", "text": "Men should always make the first move and lead the conversation.", "correct": false },
+          { "id": "b", "text": "Playing hard to get is the best strategy.", "correct": false },
+          { "id": "d", "text": "Stick to coffee, drinks, or dinner dates.", "correct": false },
+          { "id": "e", "text": "It’s okay to google your date’s full name before meeting them.", "correct": true }
         ]
       },
       {
         "id": "q2b",
-        "text": "What's your approach to creating an online dating profile?",
+        "text": "Which of these dating rules do you follow?",
         "description": "Select all that apply",
         "options": [
-          { "id": "a", "text": "I use only my best, most flattering photos", "correct": true },
-          { "id": "b", "text": "I'm completely honest in my bio, even if it might limit matches", "correct": true },
-          { "id": "c", "text": "I wait for others to message me first", "correct": false },
-          { "id": "d", "text": "I frequently update my profile to keep it fresh", "correct": true },
-          { "id": "e", "text": "I don't take it too seriously", "correct": false }
+          { "id": "b", "text": "You must wait 30 minutes to reply to texts.", "correct": false },
+          { "id": "c", "text": "No ex talk on date one—keep it chill!", "correct": true },
+          { "id": "d", "text": "No kiss on date one? They’re not into you!", "correct": false },
+          { "id": "e", "text": "Split the bill? Totally cool!", "correct": true },
+          { "id": "f", "text": "Wait X dates for sex? Nah, no rules!", "correct": true }
         ]
       },
       {
         "id": "q2c",
-        "text": "How do you feel about online dating safety?",
+        "text": "Which of these dating and relationship ideas are true?",
         "description": "Select all that apply",
         "options": [
-          { "id": "a", "text": "I always meet in public places for first dates", "correct": true },
-          { "id": "b", "text": "I Google my dates before meeting them", "correct": true },
-          { "id": "c", "text": "I share my location with friends when meeting someone new", "correct": true },
-          { "id": "d", "text": "I don't share personal information too quickly", "correct": true },
-          { "id": "e", "text": "I trust my instincts about people I meet online", "correct": false }
+          { "id": "a", "text": "The one who asks the other out should pay for the date.", "correct": false },
+          { "id": "b", "text": "Acting aloof boosts your desirability.", "correct": false },
+          { "id": "c", "text": "Romantic sparks ignite uniquely for each person, so stay patient.", "correct": true },
+          { "id": "d", "text": "You should be completely over your ex before dating.", "correct": true }
         ]
       }
     ],
     "3": [
       {
         "id": "q3",
-        "text": "What are your thoughts on relationship expectations?",
+        "text": "How should you handle conflict in relationships?",
         "description": "Select all that apply",
         "options": [
-          { "id": "a", "text": "Men should pay for dates", "correct": false },
-          { "id": "b", "text": "Women should be pursued", "correct": false },
-          { "id": "c", "text": "You should be married by a certain age", "correct": false },
-          { "id": "d", "text": "Living together before marriage leads to divorce", "correct": false },
-          { "id": "e", "text": "You should be completely over your ex before dating", "correct": true }
+          { "id": "a", "text": "Talk things out right away.", "correct": false },
+          { "id": "b", "text": "Be flexible—take time to cool off if needed.", "correct": true },
+          { "id": "c", "text": "Avoid conflict and just compromise.", "correct": false },
+          { "id": "d", "text": "Conflict means you’re not in love or compatible.", "correct": false }
         ]
       },
       {
         "id": "q3b",
-        "text": "Which of these statements about love do you believe?",
+        "text": "How important is communication in a relationship?",
         "description": "Select all that apply",
         "options": [
-          { "id": "a", "text": "Love means never having to say you're sorry", "correct": false },
-          { "id": "b", "text": "If you love someone, let them go", "correct": true },
-          { "id": "c", "text": "Love conquers all", "correct": false },
-          { "id": "d", "text": "You complete me", "correct": false },
-          { "id": "e", "text": "Love means never having to change", "correct": false }
+          { "id": "a", "text": "Essential—good listening creates deep bonds.", "correct": true },
+          { "id": "b", "text": "Important, but actions and listening speak louder.", "correct": true },
+          { "id": "c", "text": "Somewhat important—overtalking can harm.", "correct": false },
+          { "id": "d", "text": "Depends on the couple’s listening and talking balance.", "correct": true }
         ]
       },
       {
         "id": "q3c",
-        "text": "What are your deal-breakers in a relationship?",
-        "description": "Select all that apply",
+        "text": "Will talking about kids or family scare your date?",
+        "description": "Select the correct option",
         "options": [
-          { "id": "a", "text": "Different life goals", "correct": true },
-          { "id": "b", "text": "Different values or beliefs", "correct": true },
-          { "id": "c", "text": "Lack of communication", "correct": true },
-          { "id": "d", "text": "Different attitudes about money", "correct": true },
-          { "id": "e", "text": "Different views on having children", "correct": true }
+          { "id": "a", "text": "Not at all—honesty about your life builds trust.", "correct": true },
+          { "id": "b", "text": "No, discuss it if it’s a deal-breaker for you.", "correct": true },
+          { "id": "c", "text": "Maybe, but check if your schedules align.", "correct": true },
+          { "id": "d", "text": "No, but keep it light and casual.", "correct": true }
         ]
       }
     ],
     "4": [
       {
         "id": "q4",
-        "text": "How do you handle conflict in relationships?",
+        "text": "Which of these statements about love do you believe?",
         "description": "Select all that apply",
         "options": [
-          { "id": "a", "text": "I prefer to talk things out immediately", "correct": true },
-          { "id": "b", "text": "I need time to cool off before discussing", "correct": true },
-          { "id": "c", "text": "I avoid conflict when possible", "correct": false },
-          { "id": "d", "text": "I try to find a compromise", "correct": true },
-          { "id": "e", "text": "I stand my ground on important issues", "correct": true }
+          { "id": "a", "text": "Love means never having to say you’re sorry.", "correct": false },
+          { "id": "b", "text": "If you love someone, let them go.", "correct": true },
+          { "id": "c", "text": "Love conquers all.", "correct": false },
+          { "id": "d", "text": "Opposites attract, and chemistry matters.", "correct": true },
+          { "id": "e", "text": "Love means never having to change.", "correct": false }
         ]
       },
       {
         "id": "q4b",
-        "text": "How important is communication in a relationship?",
+        "text": "What are your deal-breakers in a relationship?",
         "description": "Select all that apply",
         "options": [
-          { "id": "a", "text": "Very important - it's the foundation", "correct": true },
-          { "id": "b", "text": "Important, but actions speak louder than words", "correct": true },
-          { "id": "c", "text": "Somewhat important - too much talking can be bad", "correct": false },
-          { "id": "d", "text": "Not as important as chemistry", "correct": false },
-          { "id": "e", "text": "It depends on the people involved", "correct": true }
+          { "id": "a", "text": "Different life goals.", "correct": true },
+          { "id": "b", "text": "Different values or beliefs.", "correct": true },
+          { "id": "c", "text": "Lack of communication.", "correct": true },
+          { "id": "d", "text": "Different attitudes about money.", "correct": true },
+          { "id": "e", "text": "Different views on having children.", "correct": true }
         ]
       },
       {
         "id": "q4c",
-        "text": "How do you prefer to communicate with your partner?",
+        "text": "What are your thoughts on relationship milestones?",
         "description": "Select all that apply",
         "options": [
-          { "id": "a", "text": "Face-to-face conversations", "correct": true },
-          { "id": "b", "text": "Texting throughout the day", "correct": true },
-          { "id": "c", "text": "Phone or video calls", "correct": true },
-          { "id": "d", "text": "Leaving notes or messages", "correct": true },
-          { "id": "e", "text": "Through actions rather than words", "correct": false }
+          { "id": "a", "text": "You should be exclusive after 3 dates.", "correct": false },
+          { "id": "b", "text": "Saying ‘I love you’ early is a red flag.", "correct": true },
+          { "id": "c", "text": "You should wait at least a year before getting engaged.", "correct": false },
+          { "id": "d", "text": "Living together before marriage is necessary.", "correct": false },
+          { "id": "e", "text": "You should be friends before dating.", "correct": false }
         ]
       }
     ],
     "5": [
       {
         "id": "q5",
-        "text": "What are your thoughts on relationship milestones?",
-        "description": "Select all that apply",
+        "text": "Have you lost your dating touch if you’ve been out of the game?",
+        "description": "Select the correct option",
         "options": [
-          { "id": "a", "text": "You should be exclusive after 3 dates", "correct": false },
-          { "id": "b", "text": "Saying 'I love you' too soon is a red flag", "correct": false },
-          { "id": "c", "text": "You should wait at least a year before getting engaged", "correct": false },
-          { "id": "d", "text": "Living together before marriage is necessary", "correct": false },
-          { "id": "e", "text": "You should be friends before dating", "correct": true }
+          { "id": "a", "text": "No, you’re just rusty—share your unique traits.", "correct": true },
+          { "id": "b", "text": "Yes, dating skills fade.", "correct": false },
+          { "id": "c", "text": "Maybe, depends on how long.", "correct": false },
+          { "id": "d", "text": "Maybe, but you learn by jumping back in.", "correct": true }
         ]
       },
       {
         "id": "q5b",
-        "text": "Which of these statements about finding love do you believe?",
+        "text": "Is it hard to date with kids or after a break?",
         "description": "Select all that apply",
         "options": [
-          { "id": "a", "text": "You'll find love when you stop looking", "correct": false },
-          { "id": "b", "text": "There are plenty of fish in the sea", "correct": true },
-          { "id": "c", "text": "All the good ones are taken", "correct": false },
-          { "id": "d", "text": "You have to love yourself before someone else can love you", "correct": true },
-          { "id": "e", "text": "Timing is everything in relationships", "correct": true }
+          { "id": "a", "text": "No—your life’s chapters make you special!", "correct": true },
+          { "id": "b", "text": "Only if you hide your vibrant story.", "correct": false },
+          { "id": "c", "text": "No, kids and breaks add depth and strength.", "correct": true },
+          { "id": "d", "text": "Yes, it’s tougher, so why bother?", "correct": false },
+          { "id": "e", "text": "Maybe, but your authenticity wins hearts.", "correct": true }
         ]
       },
       {
         "id": "q5c",
-        "text": "What's your view on marriage and long-term commitment?",
+        "text": "Which of these statements about finding love do you believe?",
         "description": "Select all that apply",
         "options": [
-          { "id": "a", "text": "Marriage is important for a committed relationship", "correct": false },
-          { "id": "b", "text": "You can be committed without being married", "correct": true },
-          { "id": "c", "text": "Marriage is just a piece of paper", "correct": false },
-          { "id": "d", "text": "It's important to live together before getting married", "correct": true },
-          { "id": "e", "text": "I'm not sure if marriage is for me", "correct": true }
+          { "id": "a", "text": "You’ll find love when you stop looking.", "correct": false },
+          { "id": "b", "text": "There are plenty of fish in the sea.", "correct": false },
+          { "id": "c", "text": "All the good ones are taken.", "correct": false },
+          { "id": "d", "text": "You have to love yourself before someone else can love you.", "correct": true },
+          { "id": "e", "text": "Timing is everything in relationships.", "correct": true }
         ]
       }
     ]

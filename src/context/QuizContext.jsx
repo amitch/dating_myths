@@ -30,10 +30,13 @@ function quizReducer(state, action) {
       return { ...state, currentArea: action.payload };
       
     case SAVE_ANSWERS: {
-      const { areaId, answers } = action.payload;
+      const { areaId, answers, score } = action.payload;
       const updatedAnswers = {
         ...state.answers,
-        [areaId]: answers
+        [areaId]: {
+          answers,
+          score: score || 0
+        }
       };
       
       const updatedCompletedAreas = state.completedAreas.includes(areaId)
@@ -87,13 +90,15 @@ export function QuizProvider({ children }) {
   };
   
   const completeQuiz = () => {
-    // Calculate final score before completing the quiz
-    const totalScore = Object.values(state.areaScores).reduce((sum, score) => sum + (score || 0), 0);
+    // Calculate total score from all answers
+    const totalScore = Object.values(state.answers).reduce((sum, areaData) => {
+      return sum + (areaData.score || 0);
+    }, 0);
     
-    // Save final results to local storage for results page
+    // Save final results to session storage for results page
     const finalResults = {
       totalScore,
-      areaScores: state.areaScores,
+      answers: state.answers,
       completedAt: new Date().toISOString(),
     };
     
