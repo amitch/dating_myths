@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { GlobalStyles } from '../../styles/global';
-import { Rangoli } from '../svgs';
+import headerImage from '../../assets/header_Gemini_crop3.jpg';
 
 const AppContainer = styled.div`
   min-height: 100vh;
@@ -10,14 +10,28 @@ const AppContainer = styled.div`
 `;
 
 const Header = styled.header`
-  padding: 1.5rem;
+  padding: 2rem 1.5rem;
   text-align: center;
-  background-color: ${({ theme }) => theme.colors.white};
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: url(${headerImage}) no-repeat center center;
+  background-size: cover;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+  }
   
   svg {
     height: 60px;
     width: auto;
+    position: relative;
+    z-index: 2;
   }
 `;
 
@@ -59,9 +73,7 @@ const Layout = ({ children }) => {
     <>
       <GlobalStyles />
       <AppContainer>
-        <Header>
-          <Rangoli />
-        </Header>
+        <Header />
         <Main>{children}</Main>
         <Footer>
           <p>© {new Date().getFullYear()} Dating Myths Quiz. All rights reserved.</p>
