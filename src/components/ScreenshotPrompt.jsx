@@ -71,23 +71,34 @@ const ScreenshotPrompt = () => {
 
   useEffect(() => {
     // Show prompt after 3 seconds if not seen before
-    const timer = setTimeout(() => {
-      const hasSeen = localStorage.getItem('hasSeenScreenshotPrompt');
+    const showTimer = setTimeout(() => {
+      const hasSeen = sessionStorage.getItem('hasSeenScreenshotPrompt');
       if (!hasSeen) {
         setIsVisible(true);
-        localStorage.setItem('hasSeenScreenshotPrompt', 'true');
+        sessionStorage.setItem('hasSeenScreenshotPrompt', 'true');
+        
+        // Auto-hide after 5 seconds
+        const hideTimer = setTimeout(() => {
+          handleClose();
+        }, 5000);
+        
+        return () => clearTimeout(hideTimer);
       }
     }, 3000);
 
-    return () => clearTimeout(timer);
+    return () => clearTimeout(showTimer);
   }, []);
 
   const handleClose = () => {
+    if (!isVisible) return;
+    
     setIsClosing(true);
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setIsVisible(false);
       setIsClosing(false);
     }, 300);
+    
+    return () => clearTimeout(timer);
   };
 
   const handleShare = async () => {

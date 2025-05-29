@@ -31,6 +31,10 @@ const Main = styled.main`
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     padding: 1rem 0.5rem;
   }
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.desktop}) {
+    font-size: 0.9em;
+  }
 `;
 
 const Footer = styled.footer`

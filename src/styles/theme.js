@@ -3,21 +3,25 @@ const theme = {
     primary: '#4682B4', // Steel Blue
     secondary: '#DB7093', // Pale Violet Red
     background: '#FFF0F5', // Lavender Blush
+    backgroundDark: '#1a1a2e', // Dark background for contrast
     accent: '#A0522D', // Sienna
     text: '#2F4F4F', // Dark Slate Gray
+    textLight: '#ffffff', // White text for dark backgrounds
     white: '#FFFFFF',
+    black: '#000000',
   },
   fonts: {
     body: '"Poppins", sans-serif',
     heading: '"Montserrat", sans-serif',
   },
   fontSizes: {
-    small: '0.875rem',
-    medium: '1rem',
-    large: '1.25rem',
-    xlarge: '1.5rem',
-    xxlarge: '2rem',
+    small: '0.75rem',
+    medium: '0.875rem',
+    large: '1rem',
+    xlarge: '1.25rem',
+    xxlarge: '1.5rem',
   },
+
   breakpoints: {
     mobile: '768px',
     tablet: '1024px',

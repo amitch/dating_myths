@@ -6,6 +6,7 @@ import { useQuiz } from '../context/QuizContext';
 import { Button, Checkbox, ProgressBar } from '../components/ui';
 import questionsData from '../data/questions.json';
 import useDocumentTitle from '../hooks/useDocumentTitle';
+import heartIcon from '../assets/love_heart_icon_gemini.png';
 
 // Get area names from questions data
 const areaNames = questionsData.areas || {};
@@ -60,6 +61,21 @@ const QuestionText = styled.h2`
   margin-bottom: 1.5rem;
   font-size: 1.5rem;
   line-height: 1.5;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    background-image: url(${heartIcon});
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    flex-shrink: 0;
+  }
 `;
 
 const QuestionDescription = styled.div`

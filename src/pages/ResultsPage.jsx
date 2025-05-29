@@ -211,7 +211,7 @@ function ResultsPage() {
         animate="visible"
         transition={{ delay: 0.2 }}
       >
-        <h2>Hello{userName ? `, ${userName}` : ''}!</h2>
+        <h2>Hello{userName ? ` ${userName}` : ''}!</h2>
         <RangoliWheel 
           score={isNaN(results.totalScore) ? 0 : results.totalScore} 
           maxScore={results.maxScore} 

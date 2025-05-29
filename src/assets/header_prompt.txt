@@ -1,0 +1,14 @@
+"Generate a stylized illustration of traditional Indian motifs, using paisley, within that, add as appropriate lotus flowers, diwali diyas, in a design header pattern for dating quiz for web use. Use below specs
+Transparency (alpha 0.7) for a layered effect
+For colors, dominate with steel-blue, using as outer layper, use rest of colors from palette, ensure ensuring contrast with text of dark-slate-gray
+--steel-blue: #4682b4ff;
+--thulian-pink: #db7093ff;
+--burnt-sienna: #ce7850ff;
+--lavender-blush: #fff0f5ff;
+--dark-slate-gray: #2f4f4fff;
+Size:
+Dimensions: 1920x200 pixels (width x height).
+Aspect Ratio: 9.6:1 (wide and shallow) to fit a header bar.
+Format: SVG for scalability and crisp rendering across devices (mobile to desktop)
+Orientation: Horizontal repeat to ensure seamless tiling if the header extends beyond 1920px.
+File Size: Optimize for <100KB to maintain fast load times (Vite optimization, Task 12)
