@@ -16,14 +16,79 @@ A modern, interactive quiz application built with React, Vite, and Framer Motion
 
 - Node.js (v16 or later)
 - npm or yarn
+- Vercel CLI (optional, for manual deployment)
 
 ### Installation
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/dating-myths-quiz.git
-   cd dating-myths-quiz
+   git clone https://github.com/yourusername/dating_myths.git
+   cd dating_myths
    ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+4. Build for production:
+   ```bash
+   npm run build
+   ```
+
+## 🚀 Deployment
+
+### Deploy to Vercel
+
+This project is configured for easy deployment on Vercel. Follow these steps:
+
+1. Push your code to a GitHub, GitLab, or Bitbucket repository
+2. Go to [Vercel](https://vercel.com) and sign in with your Git provider
+3. Click "New Project" then "Import" your repository
+4. Vercel will automatically detect the Vite project and configure the settings
+5. Click "Deploy" and wait for the deployment to complete
+
+Your app will be live at `https://your-project-name.vercel.app`
+
+#### Manual Deployment with Vercel CLI
+
+1. Install Vercel CLI globally:
+   ```bash
+   npm install -g vercel
+   ```
+
+2. Login to your Vercel account:
+   ```bash
+   vercel login
+   ```
+
+3. Deploy to Vercel:
+   ```bash
+   vercel --prod
+   ```
+
+### Environment Variables
+
+This project doesn't require any environment variables for basic functionality. However, if you add any API keys or sensitive data in the future, create a `.env` file in the root directory:
+
+```env
+VITE_API_KEY=your_api_key_here
+```
+
+And update the Vercel project settings with these environment variables.
+
+## 📦 Build Output
+
+The production build will be created in the `dist/` directory, containing:
+
+- `index.html` - The main HTML file
+- `assets/` - Compiled JavaScript and CSS files
+- `public/` - Static assets (images, fonts, etc.)
 
 2. Install dependencies:
    ```bash
