@@ -9,6 +9,7 @@ import { useEffect } from 'react';
 
 // Import components directly to avoid circular dependencies
 import { Button } from '../components/ui/Button';
+import Layout from '../components/layout/Layout';
 
 const IntroContainer = styled.div`
   display: flex;
@@ -91,39 +92,59 @@ function IntroPage() {
     handleFormSubmit
   );
 
+    // Create a styled header component for the quiz area
+    const AreaHeader = () => (
+      <div style={{
+        position: 'relative',
+        zIndex: 2,
+        color: 'white',
+        textAlign: 'center',
+        padding: '1rem 0',
+        textShadow: '1px 1px 3px rgba(0, 0, 0, 0.5)'
+      }}>
+      </div>
+    );
+
   return (
-    <IntroContainer>
-      <Title
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        Welcome to the Dating Myths Quiz
-      </Title>
-      
-      <Subtitle>
-        Think dating needs a Bollywood sparkle or a perfect rishta match? Let's test it—as in life, there may be more than one right answer!
-      </Subtitle>
-      
-      <Form onSubmit={handleSubmit}>
-        <Input
-          type="text"
-          name="name"
-          value={values.name}
-          onChange={handleChange}
-          placeholder="What should we call you?"
-          required
-        />
-        <Button 
-          type="submit"
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.98 }}
+    <Layout 
+      title="" 
+      showHeader={true} 
+      showFooter={false}
+      customHeader={<AreaHeader />}
+    >
+      <IntroContainer>
+        <Title
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5 }}
         >
-          Start Quiz
-        </Button>
-      </Form>
-    </IntroContainer>
-  );
+          Welcome to the Dating Myths Quiz
+        </Title>
+        
+        <Subtitle>
+          Think dating needs a Bollywood sparkle or a perfect rishta match? Let's test it—as in life, there may be more than one right answer!
+        </Subtitle>
+        
+        <Form onSubmit={handleSubmit}>
+          <Input
+            type="text"
+            name="name"
+            value={values.name}
+            onChange={handleChange}
+            placeholder="What should we call you?"
+            required
+          />
+          <Button 
+            type="submit"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            Start Quiz
+          </Button>
+        </Form>
+      </IntroContainer>
+    </Layout>
+    );
 }
 
 export default IntroPage;
