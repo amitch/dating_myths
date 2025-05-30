@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
 import { useQuiz } from '../context/QuizContext';
 import { Button } from '../components/ui';
+import Layout from '../components/layout/Layout';
 import { logEvent, EVENT_TYPES } from '../utils/logger';
 import { fadeIn, fadeInUp } from '../utils/animations';
 import { 
@@ -230,94 +231,113 @@ function ResultsPage() {
     navigate('/quiz/1');
   };
 
+  const CommonHeader = () => (
+    <div style={{
+      position: 'relative',
+      zIndex: 2,
+      color: 'white',
+      textAlign: 'center',
+      padding: '1rem 0',
+      textShadow: '1px 1px 3px rgba(0, 0, 0, 0.5)'
+    }}>
+    </div>
+  );
+
   return (
-    <ResultsContainer
-      initial="hidden"
-      animate="visible"
-      variants={fadeIn}
+    <Layout 
+      title="" 
+      showHeader={true} 
+      showFooter={false}
+      customHeader={<CommonHeader />}
     >
-      <ScreenshotPrompt />
-      
-      <ScoreCard
-        variants={fadeInUp}
+      <ResultsContainer
         initial="hidden"
         animate="visible"
-        transition={{ delay: 0.2 }}
+        variants={fadeIn}
       >
-        <h2>Hello{userName ? ` ${userName}` : ''}!</h2>
-        <RangoliWheel 
-          score={isNaN(results.totalScore) ? 0 : results.totalScore} 
-          maxScore={results.maxScore} 
-        />
-        <h3 style={{ 
-          color: '#2F4F4F', 
-          margin: '1rem 0 0.5rem',
-          fontSize: '1.8rem',
-          fontWeight: 'bold'
-        }}>
-          {results.title}
-        </h3>
-        <p style={{
-          color: '#666',
-          fontSize: '1.1rem',
-          marginBottom: '1.5rem',
-          fontStyle: 'italic'
-        }}>
-          {results.description}
-        </p>
-      </ScoreCard>
+        <ScreenshotPrompt />
+        
+        <ScoreCard
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          transition={{ delay: 0.2 }}
+        >
+          <h2>Hello{userName ? ` ${userName}` : ''}!</h2>
+          <RangoliWheel 
+            score={isNaN(results.totalScore) ? 0 : results.totalScore} 
+            maxScore={results.maxScore} 
+          />
+          <h3 style={{ 
+            color: '#2F4F4F', 
+            margin: '1rem 0 0.5rem',
+            fontSize: '1.8rem',
+            fontWeight: 'bold'
+          }}>
+            {results.title}
+          </h3>
+          <p style={{
+            color: '#666',
+            fontSize: '1.1rem',
+            marginBottom: '1.5rem',
+            fontStyle: 'italic'
+          }}>
+            {results.description}
+          </p>
+        </ScoreCard>
 
-      <ScoreCard>
-        <Subtitle>Your Scores by Area</Subtitle>
-        <AreaScoresContainer>
-          {Object.entries(results.areaScores).map(([areaId, score]) => (
-            <AreaScore key={areaId}>
-              <span>{areaId}. {areaNames[areaId] || `Area ${areaId}`}:</span>
-              <span>{isNaN(score) ? 0 : score}/3</span>
-            </AreaScore>
-          ))}
-        </AreaScoresContainer>
-      </ScoreCard>
+        <ScoreCard>
+          <Subtitle>Your Scores by Area</Subtitle>
+          <AreaScoresContainer>
+            {Object.entries(results.areaScores).map(([areaId, score]) => (
+              <AreaScore key={areaId}>
+                <span>{areaId}. {areaNames[areaId] || `Area ${areaId}`}:</span>
+                <span>{isNaN(score) ? 0 : score}/3</span>
+              </AreaScore>
+            ))}
+          </AreaScoresContainer>
+        </ScoreCard>
 
-      <ScoreCard>
-        <Subtitle>Your Personalized Tips</Subtitle>
-        <TipsList>
-          {results.tips.map((tip, index) => {
-            // Get the area name for the weakest area tip
-            const areaName = areaNames[results.weakestArea] || `Area ${results.weakestArea}`;
-            const formattedTip = tip.replace('{area}', areaName);
-            
-            return (
-              <TipCard
-                key={index}
-                variants={fadeInUp}
-                initial="hidden"
-                animate="visible"
-                transition={{ delay: 0.3 + index * 0.1 }}
-              >
-                {formattedTip}
-              </TipCard>
-            );
-          })}
-        </TipsList>
+        <ScoreCard>
+          <Subtitle>Your Personalized Tips</Subtitle>
+          <TipsList>
+            {results.tips.map((tip, index) => {
+              // Get the area name for the weakest area tip
+              const areaName = areaNames[results.weakestArea] || `Area ${results.weakestArea}`;
+              const formattedTip = tip.replace('{area}', areaName);
+              
+              return (
+                <TipCard
+                  key={index}
+                  variants={fadeInUp}
+                  initial="hidden"
+                  animate="visible"
+                  transition={{ delay: 0.3 + index * 0.1 }}
+                >
+                  {formattedTip}
+                </TipCard>
+              );
+            })}
+          </TipsList>
 
-        <Actions>
-          <Button
-            variant="secondary"
-            onClick={() => navigate('/')}
-          >
-            Back to Start
-          </Button>
-          <Button
-            variant="primary"
-            onClick={handleRetakeQuiz}
-          >
-            Retake Quiz
-          </Button>
-        </Actions>
-      </ScoreCard>
-    </ResultsContainer>
-  );
+          <Actions>
+            <Button
+              variant="secondary"
+              onClick={() => navigate('/')}
+            >
+              Back to Start
+            </Button>
+            <Button
+              variant="primary"
+              onClick={handleRetakeQuiz}
+            >
+              Retake Quiz
+            </Button>
+          </Actions>
+        </ScoreCard>
+      </ResultsContainer>
+    </Layout>
+    );
 }
 
 export default ResultsPage;

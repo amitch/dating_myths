@@ -93,7 +93,7 @@ function IntroPage() {
   );
 
     // Create a styled header component for the quiz area
-    const AreaHeader = () => (
+    const CommonHeader = () => (
       <div style={{
         position: 'relative',
         zIndex: 2,
@@ -110,7 +110,7 @@ function IntroPage() {
       title="" 
       showHeader={true} 
       showFooter={false}
-      customHeader={<AreaHeader />}
+      customHeader={<CommonHeader />}
     >
       <IntroContainer>
         <Title
