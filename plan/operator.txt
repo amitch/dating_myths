@@ -1,3 +1,16 @@
+
+Links:
+https://dating-myths.vercel.app/results
+
+https://vercel.com/amitcs-projects-da481143/dating-myths/deployments
+https://github.com/amitch/dating_myths/commits/main/
+
+npm run dev
+to run locally
+
+push to github main
+to deploy to vercel
+
 Typical workflow:
 - one or more tasks at a time, commit after successful testing.
 
