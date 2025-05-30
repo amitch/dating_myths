@@ -168,7 +168,7 @@
       },
       "dependencies": ["6.1", "6.2", "6.3", "6.4", "6.5", "6.6"],
       "priority": "high",
-      "status": "not_started"
+      "status": "completed"
     },
     {
       "id": "7.1",
@@ -180,7 +180,7 @@
       },
       "dependencies": ["5", "4"],
       "priority": "high",
-      "status": "in_progress"
+      "status": "completed"
     },
     {
       "id": "7.2",
@@ -191,7 +191,8 @@
         "implementation_details": "Import questions.json in QuizPage.jsx. Filter by areaId (e.g., First Impressions for areaId=1). Store in useState. Ensure JSON supports 15 questions (5 areas, 3 each) with 1-3 correct answers."
       },
       "dependencies": ["7.1"],
-      "priority": "high"
+      "priority": "high",
+      "status": "completed"
     },
     {
       "id": "7.3",
@@ -202,21 +203,11 @@
         "implementation_details": "Render questions as Question component list in QuizPage.jsx, each with 4 checkboxes (Pale Violet Red #DB7093 on Lavender Blush #FFF0F5). Apply Framer Motion slide-in (0.3s). Use lotus/paisley SVG separators (Sienna #A0522D)."
       },
       "dependencies": ["7.2", "2", "3"],
-      "priority": "high"
+      "priority": "high",
+      "status": "completed"
     },
     {
       "id": "7.4",
-      "title": "Implement progress bar",
-      "description": {
-        "overview": "Add styled progress bar to indicate current quiz area.",
-        "story_ids": ["ST-102"],
-        "implementation_details": "Create ProgressBar component in QuizPage.jsx, showing 'Area X of 5' with Steel Blue #4682B4 fill on Lavender Blush #FFF0F5. Calculate progress from areaId (e.g., 20% for areaId=1). Add Framer Motion transition (0.3s)."
-      },
-      "dependencies": ["7.1", "2"],
-      "priority": "high"
-    },
-    {
-      "id": "7.5",
       "title": "Add 'Next' button with logic",
       "description": {
         "overview": "Implement 'Next' button to advance to next area or results, disabled until all questions answered.",
@@ -224,29 +215,32 @@
         "implementation_details": "Add Sienna #A0522D 'Next' button in QuizPage.jsx, disabled until each question has one checkbox selected (useState tracking). Navigate to '/quiz/:nextAreaId' or '/results' (areaId=5). Show error (Dark Slate Gray #2F4F4F) if incomplete."
       },
       "dependencies": ["7.3", "4"],
-      "priority": "high"
+      "priority": "high",
+      "status": "completed"
     },
     {
-      "id": "7.6",
+      "id": "7.5",
       "title": "Save answers to context and sessionStorage",
       "description": {
         "overview": "Store answers in global state and sessionStorage for persistence.",
         "story_ids": ["ST-102", "ST-104"],
         "implementation_details": "Update global state (useContext, useReducer) with checkbox selections. Sync to sessionStorage via useEffect. Load state on QuizPage mount. Clear sessionStorage on quiz completion."
       },
-      "dependencies": ["7.5", "4"],
-      "priority": "high"
+      "dependencies": ["7.4", "4"],
+      "priority": "high",
+      "status": "completed"
     },
     {
-      "id": "7.7",
+      "id": "7.6",
       "title": "Handle navigation to next area or results",
       "description": {
         "overview": "Implement navigation logic to next quiz area or results, preventing revisits.",
         "story_ids": ["ST-102"],
         "implementation_details": "In QuizPage.jsx, use useNavigate to route to '/quiz/:nextAreaId' or '/results' after 'Next' click. Block revisits by checking state (redirect to '/results' if areaId < current). Pass answers via state."
       },
-      "dependencies": ["7.5", "5"],
-      "priority": "high"
+      "dependencies": ["7.5", "4"],
+      "priority": "high",
+      "status": "completed"
     },
     {
       "id": "8",
@@ -257,7 +251,8 @@
         "implementation_details": "In src/utils/, create: calculateScores(answers) for total/area scores (1 point if any correct answer), getStrongestWeakestAreas(areaScores) prioritizing First Impressions for weakest ties, getTips(weakestArea) for 3 tips."
       },
       "dependencies": [],
-      "priority": "medium"
+      "priority": "medium",
+      "status": "not_started"
     },
     {
       "id": "9.1",
@@ -268,7 +263,8 @@
         "implementation_details": "Create ResultsPage.jsx with sections for scores, rangoli wheel, title, tips, screenshot prompt. Apply Lavender Blush #FFF0F5 background. Use global state for answers and name."
       },
       "dependencies": ["5"],
-      "priority": "medium"
+      "priority": "medium",
+      "status": "completed"
     },
     {
       "id": "9.2",
@@ -276,24 +272,13 @@
       "description": {
         "overview": "Fetch answers and compute scores for display.",
         "story_ids": ["ST-103"],
-        "implementation_details": "In ResultsPage.jsx, retrieve answers from state. Call calculateScores for total (out of 15) and area scores (out of 3). Pass to getStrongestWeakestAreas."
+        "implementation_details": "In ResultsPage.jsx, retrieve answers from state. Call calculateScores for total (out of 15) and area scores (out of 3)."
       },
       "dependencies": ["9.1", "4", "8"],
       "priority": "medium"
     },
     {
       "id": "9.3",
-      "title": "Render rangoli progress wheel",
-      "description": {
-        "overview": "Display SVG-based rangoli progress wheel for area scores.",
-        "story_ids": ["ST-103"],
-        "implementation_details": "Create RangoliWheel component with rangoli SVG (Sienna #A0522D, Steel Blue #4682B4). Render segments based on area scores. Apply Framer Motion fade-in (0.3s). Ensure mobile scalability."
-      },
-      "dependencies": ["9.2", "3"],
-      "priority": "medium"
-    },
-    {
-      "id": "9.4",
       "title": "Display scores and title",
       "description": {
         "overview": "Show total score, area scores, and assigned title.",
@@ -301,10 +286,11 @@
         "implementation_details": "In ResultsPage.jsx, render total score (e.g., '12/15'), area scores (e.g., 'First Impressions: 2/3'), title (e.g., 'Confident Connector' for 12-15). Use Dark Slate Gray #2F4F4F on Lavender Blush #FFF0F5."
       },
       "dependencies": ["9.2", "2"],
-      "priority": "medium"
+      "priority": "medium",
+      "status": "completed"
     },
     {
-      "id": "9.5",
+      "id": "9.4",
       "title": "Show personalized tips",
       "description": {
         "overview": "Display 3 personalized tips based on weakest area in styled cards.",
@@ -312,18 +298,8 @@
         "implementation_details": "Create TipsCard component for each tip (Lavender Blush #FFF0F5, Sienna #A0522D border). Call getTips(weakestArea) for tips (e.g., 'Try a coffee date at Philz'). Apply Framer Motion slide-in (0.3s)."
       },
       "dependencies": ["9.2", "2", "8"],
-      "priority": "medium"
-    },
-    {
-      "id": "9.6",
-      "title": "Add styled screenshot prompt",
-      "description": {
-        "overview": "Implement screenshot prompt to encourage sharing results.",
-        "story_ids": ["ST-103"],
-        "implementation_details": "Add ScreenshotPrompt component: 'Take a screenshot to share your results at the Silicon Valley date night event!' in styled container (Lavender Blush #FFF0F5, Sienna #A0522D border, rangoli dot SVG). Apply Framer Motion fade-in (0.3s)."
-      },
-      "dependencies": ["9.1", "2", "3"],
-      "priority": "medium"
+      "priority": "medium",
+      "status": "completed"
     },
     {
       "id": "10",
@@ -334,18 +310,32 @@
         "implementation_details": "In IntroPage.jsx, show error (Dark Slate Gray #2F4F4F) for empty name on 'Start Quiz'. In QuizPage.jsx, display error if 'Next' clicked without all questions answered. Use Emotion for styling."
       },
       "dependencies": ["6.1", "7.5"],
-      "priority": "low"
+      "priority": "low",
+      "status": "not_started"
     },
     {
-      "id": "11",
-      "title": "Testing and debugging",
+      "id": "11.1",
+      "title": "Integration testing",
       "description": {
-        "overview": "Test application for functionality, responsiveness, and accessibility, resolving issues.",
+        "overview": "Add integration testing for functionality, resolving issues.",
         "story_ids": ["ST-101", "ST-102", "ST-103"],
-        "implementation_details": "Use React Testing Library for component tests (IntroPage, QuizPage, ResultsPage). Verify responsiveness (<768px). Check WCAG 2.1 (contrast, ARIA labels). Debug state (sessionStorage) and navigation. Run 'npm test' in Windsurf."
+        "implementation_details": "Use appropriate testing tools to test all correct answers and then minimum correct answers."
       },
       "dependencies": ["6.7", "7.7", "9.6", "10"],
-      "priority": "high"
+      "priority": "high",
+      "status": "not_started"
+    },
+    {
+      "id": "11.2",
+      "title": "Responsiveness Testing",
+      "description": {
+        "overview": "Add testing for responsiveness, resolving issues.",
+        "story_ids": ["ST-101", "ST-102", "ST-103"],
+        "implementation_details": "Verify responsiveness (<768px). Check WCAG 2.1 (contrast, ARIA labels)."
+      },
+      "dependencies": ["6.7", "7.7", "9.6", "10"],
+      "priority": "low",
+      "status": "not_started"
     },
     {
       "id": "12",
