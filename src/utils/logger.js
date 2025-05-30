@@ -49,25 +49,16 @@ export const logEvent = async (eventType, data = {}) => {
     return Promise.resolve();
   }
 
-  // Format the log message based on event type
-  let logMessage = '';
-  if (eventType === EVENT_TYPES.QUIZ_COMPLETED) {
-    const userName = data.userName || 'Anonymous';
-    const title = data.title || 'No Title';
-    logMessage = `User ${userName} finished the quiz, they got to ${title}, scores details as currently logged.`;
-  }
-
   const logData = {
     timestamp: new Date().toISOString(),
     eventType,
-    message: logMessage,
     ...data,
     ...getClientInfo(),
   };
 
   try {
     // Use fetch instead of axios to reduce bundle size
-    const response = await fetch(`${API_URL}/logs`, {
+    const response = await fetch(`${API_URL}/api/logs`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
