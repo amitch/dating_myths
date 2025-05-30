@@ -1,9 +1,11 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import useForm from '../hooks/useForm';
 import { useMediaQuery } from '../hooks/useMediaQuery';
 import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
 import useDocumentTitle from '../hooks/useDocumentTitle';
+import { logEvent, EVENT_TYPES } from '../utils/logger';
+import { useEffect } from 'react';
 
 // Import components directly to avoid circular dependencies
 import { Button } from '../components/ui/Button';
@@ -57,9 +59,24 @@ const Input = styled.input`
 function IntroPage() {
   useDocumentTitle('Welcome');
   const navigate = useNavigate();
+  const location = useLocation();
   const isMobile = useMediaQuery('(max-width: 768px)');
   
-  const handleFormSubmit = (formValues) => {
+  // Log page view
+  useEffect(() => {
+    logEvent(EVENT_TYPES.PAGE_VIEW, {
+      page: 'Intro',
+      path: location.pathname,
+    });
+  }, [location.pathname]);
+  
+  const handleFormSubmit = async (formValues) => {
+    await logEvent(EVENT_TYPES.QUIZ_STARTED, {
+      userName: formValues.name,
+      timestamp: new Date().toISOString(),
+      referrer: document.referrer || 'direct',
+    });
+    
     navigate('/quiz/1', { state: { userName: formValues.name } });
   };
   

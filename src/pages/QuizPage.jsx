@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
 import { useQuiz } from '../context/QuizContext';
 import { Button, Checkbox, ProgressBar } from '../components/ui';
+import Layout from '../components/layout/Layout';
 import questionsData from '../data/questions.json';
 import useDocumentTitle from '../hooks/useDocumentTitle';
+import { logEvent, EVENT_TYPES } from '../utils/logger';
 import heartIcon from '../assets/love_heart_icon_gemini.png';
 
 // Get area names from questions data
@@ -125,42 +127,61 @@ function QuizPage() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   
-  // Debug logs
-  console.log('Rendering QuizPage with areaId:', areaId);
-  console.log('Current question index:', currentQuestion);
-  
   // Get questions and area name for the current area
   const { questions } = questionsData;
   const areaQuestions = questions?.[areaId] || [];
-  const areaName = areaNames[areaId] ? `${areaId}. ${areaNames[areaId]}` : `Area ${areaId}`;
+  const areaName = areaNames[areaId] 
+    ? `${areaId}. ${areaNames[areaId]} (${areaId} of ${TOTAL_AREAS})` 
+    : `Area ${areaId} (${areaId} of ${TOTAL_AREAS})`;
+  const location = useLocation();
   
-  // Debug logs
-  console.log('Area name:', areaName);
-  console.log('Area questions:', areaQuestions);
-  
-  // Set loading state and validate questions
+  // Log page view and validate questions
   useEffect(() => {
+    logEvent(EVENT_TYPES.PAGE_VIEW, {
+      page: `Quiz Area ${areaId}`,
+      path: location.pathname,
+      areaName: areaNames[areaId],
+      questionCount: areaQuestions.length,
+    });
+    
     if (areaQuestions.length > 0) {
-      console.log(`Found ${areaQuestions.length} questions for area ${areaId}`);
       setIsLoading(false);
       setError('');
     } else {
-      console.error(`No questions found for area ${areaId}`);
       setError('No questions found for this area. Please try again.');
       setIsLoading(false);
+      
+      logEvent('QUIZ_ERROR', {
+        error: 'No questions found',
+        areaId,
+        path: location.pathname,
+      });
     }
   }, [areaId, areaQuestions]);
 
-  const handleOptionSelect = (question, optionId) => {
+  const handleOptionSelect = async (question, optionId) => {
+    const newSelection = { [question.id]: [optionId] };
+    
     setSelectedOptions(prev => ({
       ...prev,
-      [question.id]: [optionId] // Always store as array with single selection
+      ...newSelection
     }));
+    
+    // Log the answer
+    await logEvent(EVENT_TYPES.QUESTION_ANSWERED, {
+      areaId,
+      questionId: question.id,
+      questionText: question.text,
+      selectedOption: optionId,
+      isCorrect: question.options.find(opt => opt.id === optionId)?.correct || false,
+      timestamp: new Date().toISOString(),
+    });
+    
     // Clear any previous errors when user makes a selection
     setError('');
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     // Validate all questions are answered
     const unansweredQuestions = areaQuestions.filter(
       q => !selectedOptions[q.id] || selectedOptions[q.id].length === 0
@@ -169,11 +190,29 @@ function QuizPage() {
     if (unansweredQuestions.length > 0) {
       setError('Please answer all questions before continuing');
       window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      // Log validation error
+      await logEvent('QUIZ_VALIDATION_ERROR', {
+        areaId,
+        unansweredQuestions: unansweredQuestions.map(q => q.id),
+        error: 'Unanswered questions',
+        timestamp: new Date().toISOString(),
+      });
+      
       return;
     }
     
     // Calculate score for this area
     const score = calculateAreaScore(areaQuestions, selectedOptions);
+    
+    // Log area completion
+    await logEvent('QUIZ_AREA_COMPLETED', {
+      areaId,
+      areaName: areaNames[areaId],
+      score,
+      maxPossibleScore: areaQuestions.length,
+      timestamp: new Date().toISOString(),
+    });
     
     setError('');
     saveAnswers(areaId, selectedOptions, score);
@@ -183,6 +222,12 @@ function QuizPage() {
       navigate(`/quiz/${nextArea}`);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
+      // Log quiz completion
+      await logEvent(EVENT_TYPES.QUIZ_COMPLETED, {
+        totalAreas: TOTAL_AREAS,
+        timestamp: new Date().toISOString(),
+      });
+      
       completeQuiz();
       navigate('/results');
     }
@@ -237,71 +282,92 @@ function QuizPage() {
   const totalAreas = TOTAL_AREAS;
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <Layout title={areaName} showHeader={false} showFooter={false}>
+        <QuizContainer>
+          {error && <ErrorMessage>{error}</ErrorMessage>}
+          <div>Loading...</div>
+        </QuizContainer>
+      </Layout>
+    );
   }
 
+  // Create a styled header component for the quiz area
+  const AreaHeader = () => (
+    <div style={{
+      position: 'relative',
+      zIndex: 2,
+      color: 'white',
+      textAlign: 'center',
+      padding: '1rem 0',
+      textShadow: '1px 1px 3px rgba(0, 0, 0, 0.5)'
+    }}>
+      <h1 style={{ margin: '0 0 0.5rem 0', fontSize: '1.8rem' }}>Area {areaId} (of {TOTAL_AREAS}): {areaNames[areaId]}</h1>
+    </div>
+  );
+
   return (
-    <QuizContainer>
-      <h1>{areaName}</h1>
-      <QuestionCounter>
-        Area {areaId} of {TOTAL_AREAS}
-      </QuestionCounter>
-
-      {error && <ErrorMessage>{error}</ErrorMessage>}
-
-      {areaQuestions.map((question, qIndex) => (
-        <QuestionCard
-          key={question.id}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: qIndex * 0.1 }}
-        >
-          <QuestionText>
-            {question.text}
-            {question.description && (
-              <QuestionDescription>
-                {question.description}
-              </QuestionDescription>
-            )}
-          </QuestionText>
-          <OptionsList>
-            {question.options.map((option) => (
-              <OptionButton
-                key={option.id}
-                selected={selectedOptions[question.id]?.includes(option.id)}
-                onClick={() => handleOptionSelect(question, option.id)}
-              >
-                <Checkbox 
-                  checked={selectedOptions[question.id]?.includes(option.id)} 
-                  onChange={() => handleOptionSelect(question, option.id)}
-                  id={`${question.id}-${option.id}`}
-                  name={question.id}
-                  label={option.text}
-                />
-              </OptionButton>
-            ))}
-          </OptionsList>
-        </QuestionCard>
-      ))}
-
-      <NavigationContainer>
-        <Button
-          onClick={() => {
-            if (parseInt(areaId) > 1) {
-              navigate(`/quiz/${parseInt(areaId) - 1}`);
-            } else {
-              navigate('/');
-            }
-          }}
-          variant="secondary"
-        >
-          {parseInt(areaId) === 1 ? 'Back to Start' : 'Previous Area'}
-        </Button>
-        <Button onClick={handleNext}>
-          {parseInt(areaId) === TOTAL_AREAS ? 'See Results' : 'Next Area'}
-        </Button>
-      </NavigationContainer>
-    </QuizContainer>
+    <Layout 
+      title={areaName} 
+      showHeader={true} 
+      showFooter={false}
+      customHeader={<AreaHeader />}
+    >
+      <QuizContainer>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
+        {areaQuestions.map((question, qIndex) => (
+          <QuestionCard
+            key={question.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: qIndex * 0.1 }}
+          >
+            <QuestionText>
+              {question.text}
+              {question.description && (
+                <QuestionDescription>
+                  {question.description}
+                </QuestionDescription>
+              )}
+            </QuestionText>
+            <OptionsList>
+              {question.options.map((option) => (
+                <OptionButton
+                  key={option.id}
+                  selected={selectedOptions[question.id]?.includes(option.id)}
+                  onClick={() => handleOptionSelect(question, option.id)}
+                >
+                  <Checkbox 
+                    checked={selectedOptions[question.id]?.includes(option.id)} 
+                    onChange={() => handleOptionSelect(question, option.id)}
+                    id={`${question.id}-${option.id}`}
+                    name={question.id}
+                    label={option.text}
+                  />
+                </OptionButton>
+              ))}
+            </OptionsList>
+          </QuestionCard>
+        ))}
+        <NavigationContainer>
+          <Button
+            onClick={() => {
+              if (parseInt(areaId) > 1) {
+                navigate(`/quiz/${parseInt(areaId) - 1}`);
+              } else {
+                navigate('/');
+              }
+            }}
+            variant="secondary"
+          >
+            {parseInt(areaId) === 1 ? 'Back to Start' : 'Previous Area'}
+          </Button>
+          <Button onClick={handleNext}>
+            {parseInt(areaId) === TOTAL_AREAS ? 'See Results' : 'Next Area'}
+          </Button>
+        </NavigationContainer>
+      </QuizContainer>
+    </Layout>
   );
 }
 

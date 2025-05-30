@@ -49,9 +49,9 @@
         "text": "How should you approach your first few in-person dates?",
         "description": "Select all that apply",
         "options": [
-          { "id": "a", "text": "Men should always make the first move and lead the conversation.", "correct": false },
+          { "id": "a", "text": "Either the man or the woman can make the first move in text or checking in person interest.", "correct": true },
           { "id": "b", "text": "Playing hard to get is the best strategy.", "correct": false },
-          { "id": "d", "text": "Stick to coffee, drinks, or dinner dates.", "correct": false },
+          { "id": "d", "text": "Asking preference for coffee, drinks or dinner dates is a good idea.", "correct": true },
           { "id": "e", "text": "It’s okay to google your date’s full name before meeting them.", "correct": true }
         ]
       },
@@ -64,7 +64,7 @@
           { "id": "c", "text": "No ex talk on date one—keep it chill!", "correct": true },
           { "id": "d", "text": "No kiss on date one? They’re not into you!", "correct": false },
           { "id": "e", "text": "Split the bill? Totally cool!", "correct": true },
-          { "id": "f", "text": "Wait X dates for sex? Nah, no rules!", "correct": true }
+          { "id": "f", "text": "Wait X dates for sex? Nah, your call!", "correct": true }
         ]
       },
       {
@@ -85,7 +85,7 @@
         "text": "How should you handle conflict in relationships?",
         "description": "Select all that apply",
         "options": [
-          { "id": "a", "text": "Talk things out right away.", "correct": false },
+          { "id": "a", "text": "Talk things out right away, even if other does not want to.", "correct": false },
           { "id": "b", "text": "Be flexible—take time to cool off if needed.", "correct": true },
           { "id": "c", "text": "Avoid conflict and just compromise.", "correct": false },
           { "id": "d", "text": "Conflict means you’re not in love or compatible.", "correct": false }
@@ -96,7 +96,7 @@
         "text": "How important is communication in a relationship?",
         "description": "Select all that apply",
         "options": [
-          { "id": "a", "text": "Essential—good listening creates deep bonds.", "correct": true },
+          { "id": "a", "text": "Essential— as mind reading is not practical.", "correct": true },
           { "id": "b", "text": "Important, but actions and listening speak louder.", "correct": true },
           { "id": "c", "text": "Somewhat important—overtalking can harm.", "correct": false },
           { "id": "d", "text": "Depends on the couple’s listening and talking balance.", "correct": true }
@@ -109,8 +109,8 @@
         "options": [
           { "id": "a", "text": "Not at all—honesty about your life builds trust.", "correct": true },
           { "id": "b", "text": "No, discuss it if it’s a deal-breaker for you.", "correct": true },
-          { "id": "c", "text": "Maybe, but check if your schedules align.", "correct": true },
-          { "id": "d", "text": "No, but keep it light and casual.", "correct": true }
+          { "id": "c", "text": "Maybe, but worth checking if your schedules align.", "correct": true },
+          { "id": "d", "text": "No, but keep it light and interesting.", "correct": true }
         ]
       }
     ],
@@ -129,7 +129,7 @@
       },
       {
         "id": "q4b",
-        "text": "What are your deal-breakers in a relationship?",
+        "text": "What should be your deal-breakers in a relationship?",
         "description": "Select all that apply",
         "options": [
           { "id": "a", "text": "Different life goals.", "correct": true },
@@ -144,11 +144,11 @@
         "text": "What are your thoughts on relationship milestones?",
         "description": "Select all that apply",
         "options": [
-          { "id": "a", "text": "You should be exclusive after 3 dates.", "correct": false },
+          { "id": "a", "text": "You should be friends before dating.", "correct": false },
           { "id": "b", "text": "Saying ‘I love you’ early is a red flag.", "correct": true },
           { "id": "c", "text": "You should wait at least a year before getting engaged.", "correct": false },
           { "id": "d", "text": "Living together before marriage is necessary.", "correct": false },
-          { "id": "e", "text": "You should be friends before dating.", "correct": false }
+          { "id": "e", "text": "You both decide what are worth celebrating milestones", "correct": true }
         ]
       }
     ],
@@ -181,11 +181,11 @@
         "text": "Which of these statements about finding love do you believe?",
         "description": "Select all that apply",
         "options": [
-          { "id": "a", "text": "You’ll find love when you stop looking.", "correct": false },
-          { "id": "b", "text": "There are plenty of fish in the sea.", "correct": false },
+          { "id": "a", "text": "You’ll find love without looking or when you stop looking.", "correct": false },
+          { "id": "b", "text": "There are plenty of fish in the sea.", "correct": true },
           { "id": "c", "text": "All the good ones are taken.", "correct": false },
           { "id": "d", "text": "You have to love yourself before someone else can love you.", "correct": true },
-          { "id": "e", "text": "Timing is everything in relationships.", "correct": true }
+          { "id": "e", "text": "Timing matters a lot in relationships.", "correct": true }
         ]
       }
     ]

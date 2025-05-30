@@ -10,11 +10,12 @@ const AppContainer = styled.div`
 `;
 
 const Header = styled.header`
-  padding: 2rem 1.5rem;
+  padding: 3rem 1.5rem;
   text-align: center;
   background: url(${headerImage}) no-repeat center center;
   background-size: cover;
   position: relative;
+  width: 100%;
   
   &::before {
     content: '';
@@ -27,11 +28,13 @@ const Header = styled.header`
     z-index: 1;
   }
   
-  svg {
-    height: 60px;
-    width: auto;
+  h1 {
     position: relative;
     z-index: 2;
+    color: white;
+    margin: 0;
+    padding: 1rem 0;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
   }
 `;
 
@@ -68,24 +71,30 @@ const Footer = styled.footer`
   }
 `;
 
-const Layout = ({ children }) => {
+const Layout = ({ children, title = '', showHeader = true, showFooter = true, customHeader }) => {
   return (
     <>
       <GlobalStyles />
       <AppContainer>
-        <Header />
+        {showHeader && (
+          <Header>
+            {customHeader || <h1>{title}</h1>}
+          </Header>
+        )}
         <Main>{children}</Main>
-        <Footer>
-          <p>© {new Date().getFullYear()} Dating Myths Quiz. All rights reserved.</p>
-          <p>
-            Made with ❤️ by <a href="#" onClick={(e) => {
-              e.preventDefault();
-              const user = 'amitc2033';
-              const domain = 'gmail.com';
-              window.location.href = `mailto:${user}@${domain}`;
-            }}>Amit Chaudhary</a>
-          </p>
-        </Footer>
+        {showFooter && (
+          <Footer>
+            <p> {new Date().getFullYear()} Dating Myths Quiz. All rights reserved.</p>
+            <p>
+              Made with  by <a href="#" onClick={(e) => {
+                e.preventDefault();
+                const user = 'amitc2033';
+                const domain = 'gmail.com';
+                window.location.href = `mailto:${user}@${domain}`;
+              }}>Amit Chaudhary</a>
+            </p>
+          </Footer>
+        )}
       </AppContainer>
     </>
   );

@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
 import { useQuiz } from '../context/QuizContext';
 import { Button } from '../components/ui';
+import { logEvent, EVENT_TYPES } from '../utils/logger';
 import { fadeIn, fadeInUp } from '../utils/animations';
 import { 
   calculateScores, 
@@ -124,11 +125,15 @@ const AreaScore = styled.div`
 
 function ResultsPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { answers, userName, resetQuiz } = useQuiz();
-  
+  const [showScreenshotPrompt, setShowScreenshotPrompt] = useState(false);
+  const [screenshotTip, setScreenshotTip] = useState('');
+  const [hasLoggedView, setHasLoggedView] = useState(false);
+
   // Get area names from questions data
   const areaNames = questionsData.areas || {};
-  
+
   // Set initial state
   const [results, setResults] = useState({
     totalScore: 0,
@@ -140,16 +145,44 @@ function ResultsPage() {
     weakestArea: 1,
     maxScore: 15
   });
-  
+
   // Set document title based on results
-  useDocumentTitle(
-    results.totalScore > 0 
-      ? `Results: ${results.title}` 
-      : 'Quiz Results'
-  );
-  
-  // Get max score from utils
-  const maxScore = getMaxScore();
+  useDocumentTitle('Your Results - Dating Myths Quiz');
+
+  // Log results view
+  useEffect(() => {
+    if (!hasLoggedView && answers) {
+      const scores = calculateScores(answers, questionsData);
+      const totalScore = Object.values(scores).reduce((sum, score) => sum + score, 0);
+      const maxScore = getMaxScore(questionsData);
+      const percentage = Math.round((totalScore / maxScore) * 100);
+      
+      logEvent(EVENT_TYPES.REPORT_VIEWED, {
+        path: location.pathname,
+        totalScore,
+        maxScore,
+        percentage,
+        areas: Object.entries(scores).map(([areaId, score]) => ({
+          areaId,
+          areaName: questionsData.areas[areaId],
+          score,
+          maxQuestions: (questionsData.questions[areaId] || []).length
+        })),
+        timestamp: new Date().toISOString(),
+      });
+      
+      setHasLoggedView(true);
+    }
+  }, [hasLoggedView, answers, location.pathname]);
+
+  // Calculate scores and get results
+  const scores = calculateScores(answers, questionsData);
+  const totalScore = Object.values(scores).reduce((sum, score) => sum + score, 0);
+  const maxScore = getMaxScore(questionsData);
+  const percentage = Math.round((totalScore / maxScore) * 100);
+  const { strongestArea, weakestArea } = getStrongestWeakestAreas(scores, questionsData.areas);
+  const title = getTitle(percentage);
+  const tips = getTips(strongestArea, weakestArea);
 
   useEffect(() => {
     if (!answers || Object.keys(answers).length === 0) {
