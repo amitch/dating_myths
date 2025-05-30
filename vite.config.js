@@ -1,12 +1,7 @@
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { resolve } from 'path';
 
-export default defineConfig(({ mode }) => {
-  // Load env file based on `mode` in the current working directory
-  const env = loadEnv(mode, process.cwd(), '');
-  
-  return {
+export default defineConfig({
   plugins: [
     react({
       // This tells Vite to use the new JSX runtime
@@ -29,33 +24,12 @@ export default defineConfig(({ mode }) => {
     exclude: []
   },
   
-  // Base public path when served in development or production
   base: '/',
-  
-  // Build configuration
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
     emptyOutDir: true,
-    sourcemap: false,
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          react: ['react', 'react-dom', 'react-router-dom'],
-          framer: ['framer-motion']
-        },
-        entryFileNames: 'assets/[name]-[hash].js',
-        chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash][extname]',
-      }
-    },
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true,
-      },
-    },
+    sourcemap: false
   },
   
   // Server configuration for development
@@ -70,4 +44,4 @@ export default defineConfig(({ mode }) => {
     port: 3000,
     open: true
   }
-}});
+});
