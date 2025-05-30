@@ -14,15 +14,10 @@ import questionsData from './data/questions.json';
 // Get valid area IDs from questions data
 const validAreaIds = Object.keys(questionsData.questions || {}).map(Number);
 
-// Debug log for valid area IDs
-console.log('Valid area IDs from questions data:', validAreaIds);
-
 // Route handler for quiz areas
 const QuizAreaRoute = () => {
   const { areaId } = useParams();
   const areaNum = parseInt(areaId);
-  
-  console.log('QuizAreaRoute - areaId:', areaId, 'areaNum:', areaNum);
   
   if (isNaN(areaNum)) {
     console.error('Invalid area ID:', areaId);

@@ -86,7 +86,23 @@ export function QuizProvider({ children }) {
   };
   
   const saveAnswers = (areaId, answers) => {
-    dispatch({ type: SAVE_ANSWERS, payload: { areaId, answers } });
+    // Filter out any invalid question IDs before saving
+    const validAnswers = {};
+    const areaQuestions = {}; // Get this from questions data
+    
+    Object.entries(answers).forEach(([questionId, answer]) => {
+      // Only include answers for questions that exist in this area
+      if (questionId.startsWith('q') && answer) {
+        validAnswers[questionId] = answer;
+      }
+    });
+    
+    // Only save if we have valid answers
+    if (Object.keys(validAnswers).length > 0) {
+      dispatch({ type: SAVE_ANSWERS, payload: { areaId, answers: validAnswers } });
+    } else {
+      console.warn('No valid answers to save for area', areaId);
+    }
   };
   
   const completeQuiz = () => {

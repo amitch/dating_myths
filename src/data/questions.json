@@ -136,7 +136,7 @@
           { "id": "b", "text": "Different values or beliefs.", "correct": true },
           { "id": "c", "text": "Lack of communication.", "correct": true },
           { "id": "d", "text": "Different attitudes about money.", "correct": true },
-          { "id": "e", "text": "Different views on having children.", "correct": true }
+          { "id": "e", "text": "Different views on children.", "correct": true }
         ]
       },
       {

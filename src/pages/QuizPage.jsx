@@ -338,7 +338,7 @@ function QuizPage() {
                   onClick={() => handleOptionSelect(question, option.id)}
                 >
                   <Checkbox 
-                    checked={selectedOptions[question.id]?.includes(option.id)} 
+                    checked={!!(selectedOptions[question.id]?.includes(option.id))} 
                     onChange={() => handleOptionSelect(question, option.id)}
                     id={`${question.id}-${option.id}`}
                     name={question.id}

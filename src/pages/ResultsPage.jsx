@@ -177,13 +177,14 @@ function ResultsPage() {
   }, [hasLoggedView, answers, location.pathname]);
 
   // Calculate scores and get results
-  const scores = calculateScores(answers, questionsData);
-  const totalScore = Object.values(scores).reduce((sum, score) => sum + score, 0);
-  const maxScore = getMaxScore(questionsData);
-  const percentage = Math.round((totalScore / maxScore) * 100);
-  const { strongestArea, weakestArea } = getStrongestWeakestAreas(scores, questionsData.areas);
-  const title = getTitle(percentage);
-  const tips = getTips(strongestArea, weakestArea);
+  const { totalScore, areaScores, answerDetails } = calculateScores(answers);
+  const maxPossibleScore = getMaxScore(questionsData);
+  const percentage = Math.round((totalScore / maxPossibleScore) * 100);
+  const { strongestArea, weakestArea } = getStrongestWeakestAreas(areaScores, questionsData.areas);
+  const { title, description } = getTitle(percentage);
+  const tips = getTips(weakestArea);
+  
+  console.log('Scores:', { totalScore, areaScores, percentage, maxPossibleScore });
 
   useEffect(() => {
     if (!answers || Object.keys(answers).length === 0) {
@@ -192,22 +193,14 @@ function ResultsPage() {
     }
 
     try {
-      // Transform answers to match the expected format for calculateScores
-      const formattedAnswers = {};
-      Object.entries(answers).forEach(([areaId, areaData]) => {
-        if (areaData && areaData.answers) {
-          Object.entries(areaData.answers).forEach(([questionId, selectedOptions]) => {
-            formattedAnswers[questionId] = selectedOptions;
-          });
-        }
-      });
-
-      // Calculate scores with the formatted answers
-      const { totalScore, areaScores } = calculateScores(formattedAnswers);
-      const { strongestArea, weakestArea } = getStrongestWeakestAreas(areaScores);
+      // Calculate scores with the answers in their current format
+      const { totalScore, areaScores } = calculateScores(answers);
+      const { strongestArea, weakestArea } = getStrongestWeakestAreas(areaScores, questionsData.areas);
       
       // Get title and tips based on scores
-      const { title, description } = getTitle(totalScore);
+      const maxPossibleScore = getMaxScore(questionsData);
+      const percentage = Math.round((totalScore / maxPossibleScore) * 100);
+      const { title, description } = getTitle(percentage);
       const tips = getTips(weakestArea);
       
       setResults({
@@ -218,7 +211,7 @@ function ResultsPage() {
         tips,
         strongestArea,
         weakestArea,
-        maxScore
+        maxScore: maxPossibleScore
       });
     } catch (error) {
       console.error('Error calculating results:', error);

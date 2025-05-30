@@ -22,74 +22,87 @@ export const calculateScores = (answers) => {
     return { totalScore: 0, areaScores, answerDetails };
   }
   
-  // Calculate scores for each answer
-  Object.entries(answers).forEach(([questionId, selectedOptions]) => {
-    try {
-      // Extract area ID from question ID (format: 'q1', 'q2', etc.)
-      const areaId = parseInt(questionId.match(/q(\d+)/)[1]);
-      const questionNum = questionId.replace(/[^0-9]/g, '');
-      const questionKey = questionId.replace(/[^a-z0-9]/gi, '');
+  // Calculate scores for each area
+  Object.entries(answers).forEach(([areaId, areaData]) => {
+    if (!areaData?.answers) return;
+    
+    // Process each answer in the area
+    Object.entries(areaData.answers).forEach(([questionId, selectedOptions]) => {
+      try {
+        // Get the question data - handle both q1 and 1 formats
+        const normalizedQuestionId = questionId.startsWith('q') ? questionId : `q${questionId}`;
+        const questionData = questionsData.questions[areaId]?.find(
+          q => q.id === normalizedQuestionId || q.id === questionId
+        );
+        
+        if (!questionData) {
+          console.warn(`Question ${questionId} not found in area ${areaId}`);
+          return;
+        }
+        
+        
+        // Initialize answer details for this question
+        answerDetails[questionId] = {
+          question: questionData.text,
+          selectedOptions: [],
+          correctOptions: [],
+          isCorrect: false,
+          explanation: ''
+        };
+        
+        // Track if any correct answer was selected
+        let hasCorrectAnswer = false;
+        let hasIncorrectAnswer = false;
       
-      // Get the question data
-      const questionData = questionsData.questions[areaId]?.find(
-        q => q.id === questionKey
-      );
-      
-      if (!questionData) return;
-      
-      // Initialize answer details for this question
-      answerDetails[questionId] = {
-        question: questionData.text,
-        selectedOptions: [],
-        correctOptions: [],
-        isCorrect: false,
-        explanation: ''
-      };
-      
-      // Track if any correct answer was selected
-      let hasCorrectAnswer = false;
-      let hasIncorrectAnswer = false;
-      
-      // Check each selected option
-      if (Array.isArray(selectedOptions) && selectedOptions.length > 0) {
-        selectedOptions.forEach(optionId => {
-          const option = questionData.options.find(opt => opt.id === optionId);
-          if (option) {
-            answerDetails[questionId].selectedOptions.push(option.text);
-            if (option.correct) {
-              hasCorrectAnswer = true;
-              answerDetails[questionId].correctOptions.push(option.text);
-            } else {
-              hasIncorrectAnswer = true;
+        // Check each selected option
+        if (Array.isArray(selectedOptions) && selectedOptions.length > 0) {
+          selectedOptions.forEach(optionId => {
+            const option = questionData.options.find(opt => opt.id === optionId);
+            if (option) {
+              answerDetails[questionId].selectedOptions.push(option.text);
+              if (option.correct) {
+                hasCorrectAnswer = true;
+                answerDetails[questionId].correctOptions.push(option.text);
+              } else {
+                hasIncorrectAnswer = true;
+              }
             }
+          });
+        }
+        
+        // Determine if the answer is correct
+        // For multiple select, any correct answer gives a point, but incorrect answers don't subtract
+        const questionScore = hasCorrectAnswer && !hasIncorrectAnswer ? 1 : 0;
+        const areaNum = parseInt(areaId);
+        
+        // Ensure areaId is valid (1-5)
+        if (areaNum >= 1 && areaNum <= 5) {
+          // Initialize area score if it doesn't exist
+          if (typeof areaScores[areaNum] !== 'number') {
+            areaScores[areaNum] = 0;
           }
-        });
+          areaScores[areaNum] += questionScore;
+          totalScore += questionScore;
+          
+          console.log(`Area ${areaNum} score:`, areaScores[areaNum], 'for question', questionId);
+        }
+        
+        // Update answer details
+        answerDetails[questionId].isCorrect = questionScore === 1;
+        answerDetails[questionId].explanation = questionScore === 1 
+          ? 'Great job! Your selections align with healthy dating perspectives.'
+          : 'Consider reviewing these concepts for better understanding.';
+          
+      } catch (error) {
+        console.warn(`Error processing question ${questionId}:`, error);
       }
-      
-      // Determine if the answer is correct
-      // For multiple select, any correct answer gives a point, but incorrect answers don't subtract
-      const questionScore = hasCorrectAnswer && !hasIncorrectAnswer ? 1 : 0;
-      
-      // Ensure areaId is valid (1-5)
-      if (areaId >= 1 && areaId <= 5) {
-        areaScores[areaId] = (areaScores[areaId] || 0) + questionScore;
-        totalScore += questionScore;
-      }
-      
-      // Update answer details
-      answerDetails[questionId].isCorrect = questionScore === 1;
-      answerDetails[questionId].explanation = questionScore === 1 
-        ? 'Great job! Your selections align with healthy dating perspectives.'
-        : 'Consider reviewing these concepts for better understanding.';
-      
-    } catch (error) {
-      console.warn(`Error processing question ${questionId}:`, error);
-    }
+    });
   });
   
-  // Ensure no area score exceeds 3 (max 3 questions per area)
+  // Ensure no area score exceeds the number of questions in that area
   for (let i = 1; i <= 5; i++) {
-    areaScores[i] = Math.min(3, areaScores[i] || 0);
+    const maxQuestions = questionsData.questions[i]?.length || 0;
+    areaScores[i] = Math.min(maxQuestions, areaScores[i] || 0);
   }
   
   return { 
@@ -136,15 +149,20 @@ export const getTips = (weakestArea) => {
 };
 
 /**
- * Get a title based on the total score
- * @param {number} totalScore - User's total score
+ * Get a title based on the percentage score
+ * @param {number} percentage - User's score as a percentage (0-100)
  * @returns {Object} - { title, description }
  */
-export const getTitle = (totalScore) => {
-  // Find the first title where the score meets or exceeds the minScore
-  const result = scoringData.titles.find(
-    (title) => totalScore >= title.minScore
-  ) || { title: 'Unknown', description: '' };
+export const getTitle = (percentage) => {
+  // Sort titles by minScore in descending order to find the best match
+  const sortedTitles = [...scoringData.titles].sort((a, b) => b.minScore - a.minScore);
+  
+  // Find the first title where the percentage meets or exceeds the minScore
+  const result = sortedTitles.find(
+    (title) => percentage >= title.minScore
+  ) || { title: 'Unknown', description: 'Your results are being calculated.' };
+  
+  console.log('Title result for', percentage + '%:', result);
   
   return {
     title: result.title,
