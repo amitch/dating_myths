@@ -30,7 +30,7 @@ export default defineConfig(({ mode }) => {
   },
   
   // Base public path when served in development or production
-  base: env.VITE_BASE_URL || '/',
+  base: '/',
   
   // Build configuration
   build: {
@@ -39,9 +39,6 @@ export default defineConfig(({ mode }) => {
     emptyOutDir: true,
     sourcemap: false,
     rollupOptions: {
-      input: {
-        main: resolve(__dirname, 'index.html')
-      },
       output: {
         manualChunks: {
           react: ['react', 'react-dom', 'react-router-dom'],
@@ -50,27 +47,8 @@ export default defineConfig(({ mode }) => {
         entryFileNames: 'assets/[name]-[hash].js',
         chunkFileNames: 'assets/[name]-[hash].js',
         assetFileNames: 'assets/[name]-[hash][extname]',
-        // Ensure proper MIME types
-        chunkFileNames: (chunkInfo) => {
-          if (chunkInfo.name === 'index') {
-            return 'assets/[name]-[hash].js';
-          }
-          return 'assets/[name]-[hash].js';
-        },
-        // Ensure proper hashing for cache busting
-        assetFileNames: (assetInfo) => {
-          const info = assetInfo.name.split('.');
-          let ext = info[info.length - 1];
-          if (ext === 'css') {
-            return 'assets/[name]-[hash][extname]';
-          }
-          return 'assets/[name]-[hash][extname]';
-        }
       }
     },
-    // Ensure proper MIME types for all files
-    assetsInlineLimit: 0,
-    // Minify the output
     minify: 'terser',
     terserOptions: {
       compress: {
