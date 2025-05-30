@@ -152,4 +152,4 @@ This project is licensed under the GNU AGPL License - see the [LICENSE](LICENSE)
 ## Acknowledgments
 
 - Inspired by modern web development practices
-- Built with ❤️ using amazing open source tools
+- Built with ❤️ using amazing open source tools and AI

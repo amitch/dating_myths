@@ -1,12 +1,13 @@
-// Skip all logging in development unless explicitly enabled
-// Disable logging in development by default unless explicitly enabled
-const LOGGING_ENABLED = import.meta.env.PROD || import.meta.env.VITE_ENABLE_LOGGING === 'true';
-
-// Suppress the development logging message
-if (!LOGGING_ENABLED && !import.meta.env.PROD) {
-  // No console message will be shown
-}
+// Only enable logging if we're in production and have an API URL, or if explicitly enabled in development
 const API_URL = import.meta.env.VITE_API_URL;
+const IS_PRODUCTION = import.meta.env.PROD;
+const IS_DEVELOPMENT = !IS_PRODUCTION;
+const IS_LOGGING_EXPLICITLY_ENABLED = import.meta.env.VITE_ENABLE_LOGGING === 'true';
+
+// Only enable logging if:
+// 1. We're in production AND have an API URL, OR
+// 2. Logging is explicitly enabled in development
+const LOGGING_ENABLED = (IS_PRODUCTION && API_URL) || (IS_DEVELOPMENT && IS_LOGGING_EXPLICITLY_ENABLED);
 
 // Track if we've shown the offline warning
 let hasShownWarning = false;
@@ -25,26 +26,25 @@ const getClientInfo = () => {
 };
 
 export const logEvent = async (eventType, data = {}) => {
-  // Skip logging entirely if not enabled
-  if (!LOGGING_ENABLED) {
-    // Don't show any message when logging is disabled
+  // Skip logging entirely if not enabled or no API URL in production
+  if (!LOGGING_ENABLED || (IS_PRODUCTION && !API_URL)) {
     return Promise.resolve();
   }
 
-  // Only proceed if we have an API URL
+  // Only show warning in development if API URL is missing
   if (!API_URL) {
-    if (import.meta.env.DEV && !hasShownWarning) {
+    if (IS_DEVELOPMENT && !hasShownWarning) {
       console.warn('[Logger] No API URL configured. Set VITE_API_URL to enable logging.');
       hasShownWarning = true;
     }
-    return;
+    return Promise.resolve();
   }
 
   const logData = {
+    timestamp: new Date().toISOString(),
     eventType,
     ...data,
-    clientInfo: getClientInfo(),
-    timestamp: new Date().toISOString(),
+    ...getClientInfo(),
   };
 
   try {
@@ -64,7 +64,7 @@ export const logEvent = async (eventType, data = {}) => {
     }
   } catch (error) {
     // Only show errors in development
-    if (import.meta.env.DEV) {
+    if (IS_DEVELOPMENT) {
       console.warn(`[Logger] Failed to log ${eventType}:`, error.message);
     }
   }
