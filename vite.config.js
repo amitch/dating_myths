@@ -15,7 +15,7 @@ export default defineConfig(({ mode }) => {
     })
   ],
   css: {
-    postcss: './postcss.config.js'
+    postcss: './postcss.config.cjs'
   },
   // Ensure .jsx is resolved for .js files
   resolve: {
