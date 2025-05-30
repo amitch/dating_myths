@@ -150,10 +150,12 @@ function ResultsPage() {
   // Get area names from questions data
   const areaNames = questionsData.areas || {};
 
-  // Set initial state
+  // Initialize results state
   const [results, setResults] = useState({
     totalScore: 0,
     areaScores: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
+    answerDetails: {},
+    percentage: 0,
     title: 'New to Dating',
     description: 'Start your journey to better dating knowledge!',
     tips: [],
@@ -165,42 +167,7 @@ function ResultsPage() {
   // Set document title based on results
   useDocumentTitle('Your Results - Dating Myths Quiz');
 
-  // Log results view
-  useEffect(() => {
-    if (!hasLoggedView && answers) {
-      const scores = calculateScores(answers, questionsData);
-      const totalScore = Object.values(scores).reduce((sum, score) => sum + score, 0);
-      const maxScore = getMaxScore(questionsData);
-      const percentage = Math.round((totalScore / maxScore) * 100);
-      
-      logEvent(EVENT_TYPES.REPORT_VIEWED, {
-        path: location.pathname,
-        totalScore,
-        maxScore,
-        percentage,
-        areas: Object.entries(scores).map(([areaId, score]) => ({
-          areaId,
-          areaName: questionsData.areas[areaId],
-          score,
-          maxQuestions: (questionsData.questions[areaId] || []).length
-        })),
-        timestamp: new Date().toISOString(),
-      });
-      
-      setHasLoggedView(true);
-    }
-  }, [hasLoggedView, answers, location.pathname]);
-
-  // Calculate scores and get results
-  const { totalScore, areaScores, answerDetails } = calculateScores(answers);
-  const maxPossibleScore = getMaxScore(questionsData);
-  const percentage = Math.round((totalScore / maxPossibleScore) * 100);
-  const { strongestArea, weakestArea } = getStrongestWeakestAreas(areaScores, questionsData.areas);
-  const { title, description } = getTitle(percentage);
-  const tips = getTips(weakestArea);
-  
-  console.log('Scores:', { totalScore, areaScores, percentage, maxPossibleScore });
-
+  // Log results view and calculate scores
   useEffect(() => {
     if (!answers || Object.keys(answers).length === 0) {
       navigate('/');
@@ -209,7 +176,7 @@ function ResultsPage() {
 
     try {
       // Calculate scores with the answers in their current format
-      const { totalScore, areaScores } = calculateScores(answers);
+      const { totalScore, areaScores, answerDetails } = calculateScores(answers);
       const { strongestArea, weakestArea } = getStrongestWeakestAreas(areaScores, questionsData.areas);
       
       // Get title and tips based on scores
@@ -218,9 +185,30 @@ function ResultsPage() {
       const { title, description } = getTitle(percentage);
       const tips = getTips(weakestArea);
       
+      // Log the results view if not already done
+      if (!hasLoggedView) {
+        logEvent(EVENT_TYPES.REPORT_VIEWED, {
+          path: location.pathname,
+          totalScore,
+          maxScore: maxPossibleScore,
+          percentage,
+          areas: Object.entries(areaScores).map(([areaId, score]) => ({
+            areaId,
+            areaName: questionsData.areas[areaId],
+            score,
+            maxQuestions: (questionsData.questions[areaId] || []).length
+          })),
+          timestamp: new Date().toISOString(),
+        });
+        setHasLoggedView(true);
+      }
+      
+      // Update results state
       setResults({
         totalScore,
         areaScores,
+        answerDetails,
+        percentage,
         title,
         description,
         tips,
@@ -228,11 +216,32 @@ function ResultsPage() {
         weakestArea,
         maxScore: maxPossibleScore
       });
-    } catch (error) {
-      console.error('Error calculating results:', error);
-      navigate('/');
+      
+    } catch (err) {
+      console.error('Error calculating results:', err);
+      setError('An error occurred while calculating your results. Please try again.');
+      
+      logEvent('RESULTS_ERROR', {
+        error: err.message,
+        stack: err.stack,
+        timestamp: new Date().toISOString()
+      });
     }
-  }, [answers, navigate]);
+  }, [answers, navigate, questionsData.areas, hasLoggedView, location.pathname]);
+  
+  // Destructure results
+  const {
+    totalScore,
+    areaScores,
+    answerDetails,
+    percentage,
+    title,
+    description,
+    tips,
+    strongestArea,
+    weakestArea,
+    maxScore: maxPossibleScore
+  } = results;
 
   const handleRetakeQuiz = () => {
     resetQuiz();

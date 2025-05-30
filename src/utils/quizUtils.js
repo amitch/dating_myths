@@ -26,23 +26,29 @@ export const calculateScores = (answers) => {
   Object.entries(answers).forEach(([areaId, areaData]) => {
     if (!areaData?.answers) return;
     
+    // Get questions for this specific area
+    const areaQuestions = questionsData.questions[areaId] || [];
+    const questionMap = new Map(areaQuestions.map(q => [q.id, q]));
+    
     // Process each answer in the area
     Object.entries(areaData.answers).forEach(([questionId, selectedOptions]) => {
       try {
         // Get the question data - handle both q1 and 1 formats
         const normalizedQuestionId = questionId.startsWith('q') ? questionId : `q${questionId}`;
-        const questionData = questionsData.questions[areaId]?.find(
-          q => q.id === normalizedQuestionId || q.id === questionId
-        );
+        const questionData = questionMap.get(normalizedQuestionId) || questionMap.get(questionId);
         
+        // Skip if question data is not found in this area
         if (!questionData) {
-          console.warn(`Question ${questionId} not found in area ${areaId}`);
+          // Only log in development to avoid console noise
+          if (process.env.NODE_ENV === 'development') {
+            console.debug(`Question ${questionId} not found in area ${areaId}`);
+          }
           return;
         }
         
         // Initialize answer details for this question
         answerDetails[questionId] = {
-          question: questionData.text,
+          question: questionData.text || `Question ${questionId}`,
           selectedOptions: [],
           correctOptions: [],
           isCorrect: false,

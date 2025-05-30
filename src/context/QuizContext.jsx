@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer, useEffect } from 'react';
+import React, { createContext, useContext, useReducer, useEffect } from 'react';
 import { getFromSessionStorage, saveToSessionStorage } from '../utils/storage';
 
 // Initial state
@@ -122,23 +122,65 @@ export function QuizProvider({ children }) {
     dispatch({ type: COMPLETE_QUIZ });
   };
 
-  // Calculate progress
-  const progress = {
-    currentArea: state.currentArea,
-    totalAreas: 5, // Assuming 5 areas as per the quiz design
-    completedAreas: state.completedAreas.length,
-    isComplete: state.quizCompleted,
-  };
+  // Memoize action creators to prevent recreation on every render
+  const actions = React.useMemo(() => ({
+    resetQuiz: () => dispatch({ type: RESET_QUIZ }),
+    setUserName: (name) => dispatch({ type: SET_USER_NAME, payload: name }),
+    setCurrentArea: (areaId) => dispatch({ type: SET_CURRENT_AREA, payload: areaId }),
+    saveAnswers: (areaId, answers) => {
+      // Filter out any invalid question IDs before saving
+      const validAnswers = {};
+      
+      Object.entries(answers).forEach(([questionId, answer]) => {
+        // Only include answers for questions that exist in this area
+        if (questionId.startsWith('q') && answer) {
+          validAnswers[questionId] = answer;
+        }
+      });
+      
+      // Only save if we have valid answers
+      if (Object.keys(validAnswers).length > 0) {
+        dispatch({ type: SAVE_ANSWERS, payload: { areaId, answers: validAnswers } });
+      } else {
+        console.warn('No valid answers to save for area', areaId);
+      }
+    },
+    completeQuiz: () => {
+      // Calculate total score from all answers
+      const totalScore = Object.values(state.answers).reduce((sum, areaData) => {
+        return sum + (areaData.score || 0);
+      }, 0);
+      
+      // Save final results to session storage for results page
+      const finalResults = {
+        totalScore,
+        answers: state.answers,
+        completedAt: new Date().toISOString(),
+      };
+      
+      saveToSessionStorage('quizResults', finalResults);
+      dispatch({ type: COMPLETE_QUIZ });
+    },
+  }), [state.answers]);
 
-  const value = {
-    ...state,
-    ...progress,
-    resetQuiz,
-    setUserName,
-    setCurrentArea,
-    saveAnswers,
-    completeQuiz,
-  };
+  // Memoize the context value to prevent unnecessary re-renders
+  const value = React.useMemo(() => ({
+    // State
+    userName: state.userName,
+    currentArea: state.currentArea,
+    answers: state.answers,
+    completedAreas: state.completedAreas,
+    quizCompleted: state.quizCompleted,
+    // Actions (memoized)
+    ...actions,
+  }), [
+    state.userName,
+    state.currentArea,
+    state.answers,
+    state.completedAreas,
+    state.quizCompleted,
+    actions
+  ]);
 
   return <QuizContext.Provider value={value}>{children}</QuizContext.Provider>;
 }
