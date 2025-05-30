@@ -76,9 +76,14 @@ const Layout = ({ children, title = '', showHeader = true, showFooter = true, cu
     <>
       <GlobalStyles />
       <AppContainer>
-        {showHeader && (
+        {showHeader && customHeader && (
           <Header>
-            {customHeader || <h1>{title}</h1>}
+            {customHeader}
+          </Header>
+        )}
+        {showHeader && !customHeader && title && (
+          <Header>
+            <h1>{title}</h1>
           </Header>
         )}
         <Main>{children}</Main>

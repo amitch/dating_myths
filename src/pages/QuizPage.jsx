@@ -308,7 +308,7 @@ function QuizPage() {
 
   return (
     <Layout 
-      title={areaName} 
+      title="" 
       showHeader={true} 
       showFooter={false}
       customHeader={<AreaHeader />}
