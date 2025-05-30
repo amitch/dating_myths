@@ -21,7 +21,26 @@
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <script type="module" src="/src/main.jsx" crossorigin></script>
+    <script>
+      // Fallback for browsers that don't support modules
+      function loadFallback() {
+        const fallback = document.createElement('div');
+        fallback.style.textAlign = 'center';
+        fallback.style.padding = '2rem';
+        fallback.style.fontFamily = 'Arial, sans-serif';
+        fallback.innerHTML = `
+          <h1>Your browser doesn't support modern JavaScript features</h1>
+          <p>Please use a modern browser like Chrome, Firefox, Safari, or Edge to view this application.</p>
+        `;
+        document.body.appendChild(fallback);
+      }
+      
+      // Check for module support
+      if (!('noModule' in HTMLScriptElement.prototype)) {
+        loadFallback();
+      }
+    </script>
     
     <!-- Fallback for non-JS users -->
     <noscript>

@@ -1,5 +1,6 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
+import { resolve } from 'path';
 
 export default defineConfig(({ mode }) => {
   // Load env file based on `mode` in the current working directory
@@ -36,8 +37,11 @@ export default defineConfig(({ mode }) => {
     outDir: 'dist',
     assetsDir: 'assets',
     emptyOutDir: true,
-    sourcemap: true,
+    sourcemap: false,
     rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html')
+      },
       output: {
         manualChunks: {
           react: ['react', 'react-dom', 'react-router-dom'],
@@ -45,9 +49,35 @@ export default defineConfig(({ mode }) => {
         },
         entryFileNames: 'assets/[name]-[hash].js',
         chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash][extname]'
+        assetFileNames: 'assets/[name]-[hash][extname]',
+        // Ensure proper MIME types
+        chunkFileNames: (chunkInfo) => {
+          if (chunkInfo.name === 'index') {
+            return 'assets/[name]-[hash].js';
+          }
+          return 'assets/[name]-[hash].js';
+        },
+        // Ensure proper hashing for cache busting
+        assetFileNames: (assetInfo) => {
+          const info = assetInfo.name.split('.');
+          let ext = info[info.length - 1];
+          if (ext === 'css') {
+            return 'assets/[name]-[hash][extname]';
+          }
+          return 'assets/[name]-[hash][extname]';
+        }
       }
-    }
+    },
+    // Ensure proper MIME types for all files
+    assetsInlineLimit: 0,
+    // Minify the output
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
   },
   
   // Server configuration for development
