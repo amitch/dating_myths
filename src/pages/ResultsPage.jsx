@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
@@ -7,6 +7,7 @@ import { Button } from '../components/ui';
 import Layout from '../components/layout/Layout';
 import { logEvent, EVENT_TYPES } from '../utils/logger';
 import { fadeIn, fadeInUp } from '../utils/animations';
+import { UserContext } from '../context/UserContext';
 import { 
   calculateScores, 
   getStrongestWeakestAreas, 
@@ -144,63 +145,22 @@ const AreaScore = styled.div`
 function ResultsPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { answers, userName, resetQuiz } = useQuiz();
-  const [hasLoggedView, setHasLoggedView] = useState(false);
+  const { answers, resetQuiz } = useQuiz();
+  const { user } = useContext(UserContext);
+  const [results, setResults] = useState(null);
+  const [title, setTitle] = useState('');
+  const [tips, setTips] = useState([]);
+  const [maxScore, setMaxScore] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
 
   // Get area names from questions data
   const areaNames = questionsData.areas || {};
-
-  // Set initial state
-  const [results, setResults] = useState({
-    totalScore: 0,
-    areaScores: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
-    title: 'New to Dating',
-    description: 'Start your journey to better dating knowledge!',
-    tips: [],
-    strongestArea: 1,
-    weakestArea: 1,
-    maxScore: 15
-  });
 
   // Set document title based on results
   useDocumentTitle('Your Results - Dating Myths Quiz');
 
   // Log results view
-  useEffect(() => {
-    if (!hasLoggedView && answers) {
-      const scores = calculateScores(answers, questionsData);
-      const totalScore = Object.values(scores).reduce((sum, score) => sum + score, 0);
-      const maxScore = getMaxScore(questionsData);
-      const percentage = Math.round((totalScore / maxScore) * 100);
-      
-      logEvent(EVENT_TYPES.REPORT_VIEWED, {
-        path: location.pathname,
-        totalScore,
-        maxScore,
-        percentage,
-        areas: Object.entries(scores).map(([areaId, score]) => ({
-          areaId,
-          areaName: questionsData.areas[areaId],
-          score,
-          maxQuestions: (questionsData.questions[areaId] || []).length
-        })),
-        timestamp: new Date().toISOString(),
-      });
-      
-      setHasLoggedView(true);
-    }
-  }, [hasLoggedView, answers, location.pathname]);
-
-  // Calculate scores and get results
-  const { totalScore, areaScores, answerDetails } = calculateScores(answers);
-  const maxPossibleScore = getMaxScore(questionsData);
-  const percentage = Math.round((totalScore / maxPossibleScore) * 100);
-  const { strongestArea, weakestArea } = getStrongestWeakestAreas(areaScores, questionsData.areas);
-  const { title, description } = getTitle(percentage);
-  const tips = getTips(weakestArea);
-  
-  console.log('Scores:', { totalScore, areaScores, percentage, maxPossibleScore });
-
   useEffect(() => {
     if (!answers || Object.keys(answers).length === 0) {
       navigate('/');
@@ -218,7 +178,8 @@ function ResultsPage() {
       const { title, description } = getTitle(percentage);
       const tips = getTips(weakestArea);
       
-      setResults({
+      // Prepare results data
+      const resultsData = {
         totalScore,
         areaScores,
         title,
@@ -227,6 +188,24 @@ function ResultsPage() {
         strongestArea,
         weakestArea,
         maxScore: maxPossibleScore
+      };
+      
+      setResults(resultsData);
+      
+      // Log the final results
+      logEvent(EVENT_TYPES.QUIZ_COMPLETED, {
+        userName: user?.name || 'Anonymous',
+        title: title,
+        description: description,
+        score: totalScore,
+        maxScore: maxPossibleScore,
+        areas: Object.entries(areaScores).map(([areaId, score]) => ({
+          areaId,
+          areaName: areaNames[areaId],
+          score,
+          maxQuestions: (questionsData.questions[areaId] || []).length
+        })),
+        timestamp: new Date().toISOString(),
       });
     } catch (error) {
       console.error('Error calculating results:', error);
