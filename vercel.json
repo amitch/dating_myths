@@ -5,8 +5,7 @@
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "dist",
-        "includeFiles": ["**/*.js", "**/*.jsx", "**/*.css", "**/*.html", "**/*.json"]
+        "distDir": "dist"
       }
     },
     {
@@ -14,28 +13,10 @@
       "use": "@vercel/node"
     }
   ],
-  "headers": [
-    {
-      "source": "/(.*)\\.(js|jsx)",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "application/javascript"
-        }
-      ]
-    }
-  ],
   "routes": [
     {
       "src": "/api/(.*)",
       "dest": "/api/$1"
-    },
-    {
-      "src": "/(.*)\\.(js|jsx)",
-      "headers": {
-        "Content-Type": "application/javascript"
-      },
-      "continue": true
     },
     {
       "src": "/assets/(.*)",

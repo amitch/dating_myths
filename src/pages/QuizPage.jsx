@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
@@ -156,8 +156,6 @@ function QuizPage() {
   const [selectedOptions, setSelectedOptions] = useState({});
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [focusedOption, setFocusedOption] = useState(0);
-  const optionRefs = useRef({});
   
   // Save username from location state to context
   useEffect(() => {
@@ -173,67 +171,6 @@ function QuizPage() {
     ? `${areaId}. ${areaNames[areaId]} (${areaId} of ${TOTAL_AREAS})` 
     : `Area ${areaId} (${areaId} of ${TOTAL_AREAS})`;
   
-  // Handle keyboard navigation
-  const handleKeyDown = useCallback((e) => {
-    const currentQuestionData = areaQuestions[currentQuestion];
-    if (!currentQuestionData) return;
-
-    const optionCount = currentQuestionData.options.length;
-    const currentOptions = selectedOptions[currentQuestionData.id] || [];
-    const currentOptionIndex = focusedOption;
-
-    switch (e.key) {
-      case 'ArrowUp':
-        e.preventDefault();
-        setFocusedOption(prev => (prev > 0 ? prev - 1 : prev));
-        break;
-      case 'ArrowDown':
-        e.preventDefault();
-        setFocusedOption(prev => (prev < optionCount - 1 ? prev + 1 : prev));
-        break;
-      case 'ArrowLeft':
-        e.preventDefault();
-        if (currentQuestion > 0) {
-          setCurrentQuestion(prev => prev - 1);
-          setFocusedOption(0);
-        }
-        break;
-      case 'ArrowRight':
-        e.preventDefault();
-        if (currentQuestion < areaQuestions.length - 1) {
-          setCurrentQuestion(prev => prev + 1);
-          setFocusedOption(0);
-        }
-        break;
-      case ' ':
-      case 'Spacebar':
-        e.preventDefault();
-        if (currentQuestionData && currentQuestionData.options[currentOptionIndex]) {
-          handleOptionSelect(currentQuestionData, currentQuestionData.options[currentOptionIndex].id);
-        }
-        break;
-      case 'Enter':
-        e.preventDefault();
-        if (currentQuestion < areaQuestions.length - 1) {
-          setCurrentQuestion(prev => prev + 1);
-          setFocusedOption(0);
-        } else {
-          handleNext();
-        }
-        break;
-      default:
-        break;
-    }
-  }, [currentQuestion, focusedOption, areaQuestions, selectedOptions]);
-
-  // Add and remove keyboard event listeners
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [handleKeyDown]);
-
   // Log page view and validate questions
   useEffect(() => {
     logEvent(EVENT_TYPES.PAGE_VIEW, {
@@ -258,14 +195,7 @@ function QuizPage() {
     }
   }, [areaId, areaQuestions]);
 
-  const handleOptionSelect = async (question, optionId, isKeyboardEvent = false) => {
-    if (isKeyboardEvent) {
-      // Focus the selected option for better keyboard navigation
-      const optionKey = `${question.id}-${optionId}`;
-      if (optionRefs.current[optionKey]) {
-        optionRefs.current[optionKey].focus();
-      }
-    }
+  const handleOptionSelect = async (question, optionId) => {
     setSelectedOptions(prev => {
       const currentSelections = prev[question.id] || [];
       let newSelections;
@@ -297,10 +227,7 @@ function QuizPage() {
     setError('');
   };
 
-  const handleNext = async (e) => {
-    if (e) {
-      e.preventDefault();
-    }
+  const handleNext = async () => {
     // Validate all questions are answered
     const unansweredQuestions = areaQuestions.filter(
       q => !selectedOptions[q.id] || selectedOptions[q.id].length === 0
@@ -450,34 +377,18 @@ function QuizPage() {
               )}
             </QuestionText>
             <OptionsList>
-              {question.options.map((option, oIndex) => {
+              {question.options.map((option) => {
                 const isSelected = selectedOptions[question.id]?.includes(option.id) || false;
-                const isFocused = focusedOption === oIndex;
-                const optionKey = `${question.id}-${option.id}`;
-                
                 return (
                   <OptionButton
                     key={option.id}
                     selected={isSelected}
-                    tabIndex={0}
-                    ref={(el) => (optionRefs.current[optionKey] = el)}
                     onClick={() => handleOptionSelect(question, option.id)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        handleOptionSelect(question, option.id, true);
-                      }
-                    }}
-                    style={{
-                      outline: isFocused ? '2px solid #4a90e2' : 'none',
-                      outlineOffset: '2px',
-                    }}
-                    aria-label={`Option: ${option.text}${isSelected ? ' selected' : ''}`}
                   >
                     <Checkbox 
                       checked={isSelected}
                       onChange={() => handleOptionSelect(question, option.id)}
-                      id={optionKey}
+                      id={`${question.id}-${option.id}`}
                       name={`${question.id}[]`}
                       label={option.text}
                     />
@@ -497,28 +408,10 @@ function QuizPage() {
               }
             }}
             variant="secondary"
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                e.preventDefault();
-                if (parseInt(areaId) > 1) {
-                  navigate(`/quiz/${parseInt(areaId) - 1}`);
-                } else {
-                  navigate('/');
-                }
-              }
-            }}
           >
             {parseInt(areaId) === 1 ? 'Back to Start' : 'Previous Area'}
           </Button>
-          <Button 
-            onClick={handleNext}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                e.preventDefault();
-                handleNext(e);
-              }
-            }}
-          >
+          <Button onClick={handleNext}>
             {parseInt(areaId) === TOTAL_AREAS ? 'See Results' : 'Next Area'}
           </Button>
         </NavigationContainer>
