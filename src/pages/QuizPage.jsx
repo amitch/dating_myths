@@ -147,14 +147,22 @@ const OptionButton = styled(motion.div)`
 
 function QuizPage() {
   const { areaId } = useParams();
+  const location = useLocation();
   useDocumentTitle(areaNames[areaId] || 'Quiz');
   
   const navigate = useNavigate();
-  const { saveAnswers, completeQuiz } = useQuiz();
+  const { saveAnswers, completeQuiz, setUserName } = useQuiz();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState({});
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  
+  // Save username from location state to context
+  useEffect(() => {
+    if (location.state?.userName) {
+      setUserName(location.state.userName);
+    }
+  }, [location.state, setUserName]);
   
   // Get questions and area name for the current area
   const { questions } = questionsData;
@@ -162,7 +170,6 @@ function QuizPage() {
   const areaName = areaNames[areaId] 
     ? `${areaId}. ${areaNames[areaId]} (${areaId} of ${TOTAL_AREAS})` 
     : `Area ${areaId} (${areaId} of ${TOTAL_AREAS})`;
-  const location = useLocation();
   
   // Log page view and validate questions
   useEffect(() => {
