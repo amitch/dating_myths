@@ -9,5 +9,14 @@ Post functionality checks
 -mobile view test on safari (enable debug, then Cmd+Opt+R and pick device such as iPhone Pro)
 -Final scan of all tasks
 -Deploy (to Vercel)
+# Install Vercel CLI
+    npm install -g vercel
+
+# Login to your Vercel account
+    vercel login
+
+# Deploy to production
+    vercel --prod
+
 -Have friends test it
 -Announce
