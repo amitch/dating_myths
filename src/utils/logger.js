@@ -58,7 +58,7 @@ export const logEvent = async (eventType, data = {}) => {
 
   try {
     // Use fetch instead of axios to reduce bundle size
-    const response = await fetch(`${API_URL}/logs`, {
+    const response = await fetch(`${API_URL}/api/logs`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
