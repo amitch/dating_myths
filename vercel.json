@@ -14,28 +14,17 @@
       "use": "@vercel/node"
     }
   ],
-  "headers": [
-    {
-      "source": "/(.*)\\.(js|jsx)",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "application/javascript"
-        }
-      ]
-    }
-  ],
   "routes": [
     {
       "src": "/api/(.*)",
       "dest": "/api/$1"
     },
     {
-      "src": "/(.*)\\.(js|jsx)",
+      "src": "/(.*\\.(js|jsx))",
       "headers": {
         "Content-Type": "application/javascript"
       },
-      "continue": true
+      "dest": "/$1"
     },
     {
       "src": "/assets/(.*)",
