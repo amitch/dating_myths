@@ -10,34 +10,28 @@
       "id": "ST-102",
       "title": "Take quiz to get results",
       "description": "As a user, I want to take the quiz by answering questions in each area so that I can get my results. The quiz shows 3 questions per area on one page with checkboxes for multiple answers, a 'Next' button disabled until selections are made, and progress saved in sessionStorage.",
-      "status": "in_progress"
+      "status": "completed"
     },
     {
       "id": "ST-103",
       "title": "View quiz results and tips",
       "description": "As a user, I want to view my quiz results so that I can see my score and personalized tips. The results page shows my total score, area scores, a rangoli progress wheel, a title, personalized tips, and a screenshot prompt in a styled container.",
-      "status": "not_started"
+      "status": "completed"
     },
     {
       "id": "ST-104",
-      "title": "Resume quiz after tab close",
-      "description": "As a user, I want to resume my quiz if I accidentally close the tab so that I don't lose progress. On reopening the tab, my quiz progress loads from sessionStorage.",
-      "status": "not_started"
+      "title": "See error for incomplete quiz answers",
+      "description": "As a user, I want to see an error message if I try to proceed without answering all questions on a page. Clicking 'Next' without all questions answered shows an error message, and the 'Next' button stays disabled.",
+      "status": "completed"
     },
     {
       "id": "ST-105",
-      "title": "See error for incomplete quiz answers",
-      "description": "As a user, I want to see an error message if I try to proceed without answering all questions on a page. Clicking 'Next' without all questions answered shows an error message, and the 'Next' button stays disabled.",
-      "status": "not_started"
-    },
-    {
-      "id": "ST-106",
       "title": "Enter name for personalized results",
       "description": "As a user, I want to enter my name so that my results feel personalized. The intro page includes a name input field, the name is required to start the quiz, and my name appears on the results page.",
       "status": "completed"
     },
     {
-      "id": "ST-107",
+      "id": "ST-106",
       "title": "Load questions from JSON",
       "description": "As a developer, I want to load quiz questions from a JSON file so that content is easy to manage. Questions are stored in a JSON file, loaded at runtime, and updates can be made without code changes.",
       "status": "completed"
@@ -49,7 +43,7 @@
       "title": "Initialize React project with Vite",
       "description": {
         "overview": "Set up a new React project using Vite as the foundation for the quiz application.",
-        "story_ids": ["ST-107"],
+        "story_ids": ["ST-106"],
         "implementation_details": "Run 'npm create vite@latest quiz-app -- --template react'. Install dependencies with 'npm install'. Configure structure: src/, src/assets/, src/components/, src/pages/, src/styles/."
       },
       "dependencies": [],
@@ -97,7 +91,7 @@
       "title": "Configure ESLint with Airbnb rules",
       "description": {
         "overview": "Set up ESLint to enforce code quality and consistency.",
-        "story_ids": ["ST-107"],
+        "story_ids": ["ST-106"],
         "implementation_details": "Run 'npm init @eslint/config' with Airbnb style guide. Install dependencies: 'npm install eslint-config-airbnb eslint-plugin-react'. Configure .eslintrc.json for React 18+ and JSX."
       },
       "dependencies": ["1.1"],
@@ -130,27 +124,15 @@
     },
     {
       "id": "3",
-      "title": "Integrate SVGs",
-      "description": {
-        "overview": "Add SVG files (rangoli, mandala, lotus, floral, dots) to assets and create utilities for UI integration.",
-        "story_ids": ["ST-101", "ST-102", "ST-103"],
-        "implementation_details": "Place SVGs in src/assets/. Create components (e.g., RangoliHeader.jsx) with Emotion styling (Sienna #A0522D, Pale Violet Red #DB7093). Optimize with svgo. Export for IntroPage, QuizPage, ResultsPage."
-      },
-      "dependencies": ["1.1"],
-      "priority": "medium",
-      "status": "not_started"
-    },
-    {
-      "id": "4",
       "title": "Implement global state with context and sessionStorage",
       "description": {
         "overview": "Set up global state to store user name, current area, and answers, synced with sessionStorage.",
-        "story_ids": ["ST-102", "ST-104", "ST-106"],
+        "story_ids": ["ST-102", "ST-105"],
         "implementation_details": "Create QuizContext in src/context/QuizContext.jsx using useReducer (name, areaId, answers). Sync with sessionStorage via useEffect. Provide context in App.jsx. Load state on start to resume progress."
       },
       "dependencies": ["1.1"],
       "priority": "high",
-      "status": "in_progress"
+      "status": "completed"
     },
     {
       "id": "5",
@@ -162,34 +144,22 @@
       },
       "dependencies": ["1.1", "1.2", "4"],
       "priority": "high",
-      "status": "in_progress"
+      "status": "completed"
     },
     {
       "id": "6.1",
       "title": "Develop IntroPage component structure",
       "description": {
         "overview": "Create the standalone IntroPage with welcome message, name input, and 'Start Quiz' button, styled with Indian elements.",
-        "story_ids": ["ST-101", "ST-106"],
-        "implementation_details": "Build IntroPage.jsx with centered layout on Lavender Blush (#FFF0F5). Add rangoli SVG header (Sienna #A0522D, Pale Violet Red #DB7093) and Sienna 'Start Quiz' button with Framer Motion fade-in (0.3s). Implement non-empty name input validation with useState. Navigate to '/quiz/1' with name state."
+        "story_ids": ["ST-101", "ST-105"],
+        "implementation_details": "Build IntroPage.jsx with centered layout on Lavender Blush (#FFF0F5). Add Sienna 'Start Quiz' button with Framer Motion fade-in (0.3s). Implement non-empty name input validation with useState. Navigate to '/quiz/1' with name state."
       },
       "dependencies": ["1.1", "1.2", "1.3", "1.4", "2", "3", "4", "5"],
       "priority": "high",
-      "status": "in_progress"
+      "status": "completed"
     },
     {
       "id": "6.2",
-      "title": "Add Quiz Page 1 preview",
-      "description": {
-        "overview": "Integrate a non-interactive Quiz Page 1 (First Impressions) preview to boost engagement.",
-        "story_ids": ["ST-102"],
-        "implementation_details": "Create QuizPreview component in IntroPage.jsx with static question from questions.json (e.g., 'Myth: You need to be charming right away' with A-D options). Style disabled checkboxes (Pale Violet Red #DB7093 on Lavender Blush #FFF0F5). Add 'See how you’d answer!' hover effect (Framer Motion, 0.3s scale)."
-      },
-      "dependencies": ["6.1", "7.2"],
-      "priority": "high",
-      "status": "in_progress"
-    },
-    {
-      "id": "6.3",
       "title": "Optimize Intro page for mobile",
       "description": {
         "overview": "Ensure Intro page is responsive and uncluttered on mobile, prioritizing key elements.",

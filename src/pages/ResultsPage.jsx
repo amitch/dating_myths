@@ -17,7 +17,6 @@ import {
 import useDocumentTitle from '../hooks/useDocumentTitle';
 import questionsData from '../data/questions.json';
 import RangoliWheel from '../components/RangoliWheel';
-import ScreenshotPrompt from '../components/ScreenshotPrompt';
 
 const ResultsContainer = styled(motion.div)`
   max-width: 800px;
@@ -128,8 +127,6 @@ function ResultsPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { answers, userName, resetQuiz } = useQuiz();
-  const [showScreenshotPrompt, setShowScreenshotPrompt] = useState(false);
-  const [screenshotTip, setScreenshotTip] = useState('');
   const [hasLoggedView, setHasLoggedView] = useState(false);
 
   // Get area names from questions data
@@ -248,15 +245,13 @@ function ResultsPage() {
         animate="visible"
         variants={fadeIn}
       >
-        <ScreenshotPrompt />
-        
         <ScoreCard
           variants={fadeInUp}
           initial="hidden"
           animate="visible"
           transition={{ delay: 0.2 }}
         >
-          <h2>Hello{userName ? ` ${userName}` : ''}!</h2>
+          <h2>Well done{userName ? `, ${userName}` : '!'}{!userName ? '!' : '!'}</h2>
           <RangoliWheel 
             score={isNaN(results.totalScore) ? 0 : results.totalScore} 
             maxScore={results.maxScore} 
