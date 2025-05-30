@@ -44,20 +44,30 @@ const CheckboxLabel = styled.label`
   user-select: none;
 `;
 
-export const Checkbox = ({ checked, onChange, label, id, name, ...props }) => {
+export const Checkbox = ({ checked = false, onChange, label, id, name, ...props }) => {
+  // Ensure checked is always a boolean
+  const isChecked = Boolean(checked);
+  
+  // Create a safe onChange handler that won't error if not provided
+  const handleChange = (e) => {
+    if (onChange) {
+      onChange(e);
+    }
+  };
+  
   return (
     <CheckboxContainer>
       <CheckboxLabel htmlFor={id}>
         <HiddenCheckbox 
           type="checkbox" 
-          checked={checked} 
-          onChange={onChange}
+          checked={isChecked}
+          onChange={handleChange}
           id={id}
           name={name}
           {...props}
         />
-        <StyledCheckbox checked={checked}>
-          {checked && (
+        <StyledCheckbox checked={isChecked}>
+          {isChecked && (
             <svg 
               width="14" 
               height="14" 

@@ -53,16 +53,22 @@ const QuestionCounter = styled.div`
 const QuestionCard = styled(motion.div)`
   background: white;
   border-radius: 12px;
-  padding: 2rem;
-  margin-bottom: 2rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  
+  @media (max-width: 480px) {
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+    border-radius: 10px;
+  }
 `;
 
 const QuestionText = styled.h2`
   color: ${({ theme }) => theme.colors.darkSlateGray};
   margin-bottom: 1.5rem;
-  font-size: 1.5rem;
-  line-height: 1.5;
+  font-size: 1.35rem;
+  line-height: 1.4;
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -70,50 +76,73 @@ const QuestionText = styled.h2`
   &::before {
     content: '';
     display: inline-block;
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
     background-image: url(${heartIcon});
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
     flex-shrink: 0;
   }
+  
+  @media (max-width: 480px) {
+    font-size: 1.2rem;
+    margin-bottom: 1.25rem;
+    
+    &::before {
+      width: 20px;
+      height: 20px;
+    }
+  }
 `;
 
 const QuestionDescription = styled.div`
-  font-size: 1rem;
-  color: ${({ theme }) => theme.colors.steelBlue};
-  font-style: italic;
-  margin-top: 0.5rem;
-  font-weight: 500;
+  display: none; // Hide the description text as requested
 `;
 
 const OptionsList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  
+  @media (max-width: 480px) {
+    gap: 0.6rem;
+  }
 `;
 
 const OptionButton = styled(motion.div)`
-  display: block;
+  display: flex;
+  align-items: flex-start;
   width: 100%;
-  padding: 0.5rem 0;
-  border: none;
-  background: transparent;
+  padding: 0.75rem 1rem;
+  border: 1px solid ${({ theme }) => theme.colors.lavenderBlush};
+  border-radius: 8px;
+  background: white;
   text-align: left;
   cursor: pointer;
   font-size: 1rem;
   color: ${({ theme }) => theme.colors.darkSlateGray};
+  transition: all 0.2s ease;
   
   &:hover {
     background-color: ${({ theme }) => theme.colors.lavenderBlush};
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   }
   
   ${({ selected, theme }) =>
     selected &&
     `
+      background-color: ${theme.colors.lavenderBlush};
+      border-color: ${theme.colors.paleVioletRed};
       font-weight: 500;
     `}
+    
+  @media (max-width: 480px) {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.95rem;
+    border-radius: 6px;
+  }
 `;
 
 function QuizPage() {
@@ -160,12 +189,22 @@ function QuizPage() {
   }, [areaId, areaQuestions]);
 
   const handleOptionSelect = async (question, optionId) => {
-    const newSelection = { [question.id]: [optionId] };
-    
-    setSelectedOptions(prev => ({
-      ...prev,
-      ...newSelection
-    }));
+    setSelectedOptions(prev => {
+      const currentSelections = prev[question.id] || [];
+      let newSelections;
+      
+      // Toggle the clicked option
+      if (currentSelections.includes(optionId)) {
+        newSelections = currentSelections.filter(id => id !== optionId);
+      } else {
+        newSelections = [...currentSelections, optionId];
+      }
+      
+      return {
+        ...prev,
+        [question.id]: newSelections
+      };
+    });
     
     // Log the answer
     await logEvent(EVENT_TYPES.QUESTION_ANSWERED, {
@@ -331,21 +370,24 @@ function QuizPage() {
               )}
             </QuestionText>
             <OptionsList>
-              {question.options.map((option) => (
-                <OptionButton
-                  key={option.id}
-                  selected={selectedOptions[question.id]?.includes(option.id)}
-                  onClick={() => handleOptionSelect(question, option.id)}
-                >
-                  <Checkbox 
-                    checked={!!(selectedOptions[question.id]?.includes(option.id))} 
-                    onChange={() => handleOptionSelect(question, option.id)}
-                    id={`${question.id}-${option.id}`}
-                    name={question.id}
-                    label={option.text}
-                  />
-                </OptionButton>
-              ))}
+              {question.options.map((option) => {
+                const isSelected = selectedOptions[question.id]?.includes(option.id) || false;
+                return (
+                  <OptionButton
+                    key={option.id}
+                    selected={isSelected}
+                    onClick={() => handleOptionSelect(question, option.id)}
+                  >
+                    <Checkbox 
+                      checked={isSelected}
+                      onChange={() => handleOptionSelect(question, option.id)}
+                      id={`${question.id}-${option.id}`}
+                      name={`${question.id}[]`}
+                      label={option.text}
+                    />
+                  </OptionButton>
+                );
+              })}
             </OptionsList>
           </QuestionCard>
         ))}

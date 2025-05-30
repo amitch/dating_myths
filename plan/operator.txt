@@ -1,0 +1,13 @@
+Typical workflow:
+- one or more tasks at a time, commit after successful testing.
+
+Post functionality checks
+-Asthestics, including design and header
+-Test 0, middle and full score results. Good place to add integration tests
+-Add server logs
+-Fix summary page, corrected tips, removed screenshot prompt
+-mobile view test on safari (enable debug, then Cmd+Opt+R and pick device such as iPhone Pro)
+-Final scan of all tasks
+-Deploy (to Vercel)
+-Have friends test it
+-Announce

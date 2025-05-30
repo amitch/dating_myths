@@ -21,20 +21,30 @@ import RangoliWheel from '../components/RangoliWheel';
 const ResultsContainer = styled(motion.div)`
   max-width: 800px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem;
   background: ${({ theme }) => theme.colors.lavenderBlush};
   min-height: 100vh;
   color: ${({ theme }) => theme.colors.darkSlateGray};
+  
+  @media (max-width: 480px) {
+    padding: 0.5rem;
+  }
 `;
 
 const ScoreCard = styled(motion.div)`
   background: white;
   border-radius: 16px;
-  padding: 2rem;
-  margin-bottom: 2rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
   border: 1px solid ${({ theme }) => theme.colors.sienna};
+  
+  @media (max-width: 480px) {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 12px;
+  }
 `;
 
 const Title = styled.h1`
@@ -96,21 +106,29 @@ const Actions = styled.div`
 `;
 
 const AreaScoresContainer = styled.div`
-  background: white;
-  padding: 1.5rem;
-  border-radius: 12px;
-  margin: 1.5rem 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+  
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
 `;
 
 const AreaScore = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 0.5rem 0;
-  padding: 0.8rem;
+  padding: 0.75rem;
   background: ${({ theme }) => theme.colors.lavenderBlush};
-  border-radius: 6px;
-  font-size: 1.1rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  
+  @media (max-width: 480px) {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+  }
   
   span:first-of-type {
     font-weight: bold;
@@ -251,7 +269,7 @@ function ResultsPage() {
           animate="visible"
           transition={{ delay: 0.2 }}
         >
-          <h2>Well done{userName ? `, ${userName}` : '!'}{!userName ? '!' : '!'}</h2>
+          <h2>Well done{userName ? `, ${userName}` : '!'}</h2>
           <RangoliWheel 
             score={isNaN(results.totalScore) ? 0 : results.totalScore} 
             maxScore={results.maxScore} 

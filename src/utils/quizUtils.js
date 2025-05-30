@@ -40,7 +40,6 @@ export const calculateScores = (answers) => {
           return;
         }
         
-        
         // Initialize answer details for this question
         answerDetails[questionId] = {
           question: questionData.text,
@@ -51,17 +50,9 @@ export const calculateScores = (answers) => {
         };
         
         // Track selected and correct options
-        const selectedCorrectOptions = [];
-        const selectedIncorrectOptions = [];
-        const allCorrectOptions = [];
+        let hasCorrect = false;
+        let hasIncorrect = false;
         
-        // Get all correct options for this question
-        questionData.options.forEach(option => {
-          if (option.correct) {
-            allCorrectOptions.push(option.id);
-          }
-        });
-      
         // Check each selected option
         if (Array.isArray(selectedOptions) && selectedOptions.length > 0) {
           selectedOptions.forEach(optionId => {
@@ -69,25 +60,17 @@ export const calculateScores = (answers) => {
             if (option) {
               answerDetails[questionId].selectedOptions.push(option.text);
               if (option.correct) {
-                selectedCorrectOptions.push(option.id);
+                hasCorrect = true;
                 answerDetails[questionId].correctOptions.push(option.text);
               } else {
-                selectedIncorrectOptions.push(option.id);
+                hasIncorrect = true;
               }
             }
           });
         }
         
-        // Determine if the answer is correct
-        // User gets points only if:
-        // 1. They selected at least one correct answer
-        // 2. They didn't select any incorrect answers
-        // 3. They selected all correct answers (if required)
-        const hasAllCorrect = selectedCorrectOptions.length === allCorrectOptions.length;
-        const hasNoIncorrect = selectedIncorrectOptions.length === 0;
-        const hasAtLeastOneCorrect = selectedCorrectOptions.length > 0;
-        
-        const questionScore = (hasAtLeastOneCorrect && hasNoIncorrect) ? 1 : 0;
+        // Award point if at least one correct answer and no incorrect answers
+        const questionScore = (hasCorrect && !hasIncorrect) ? 1 : 0;
         const areaNum = parseInt(areaId);
         
         // Ensure areaId is valid (1-5)

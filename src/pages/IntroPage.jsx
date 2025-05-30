@@ -122,7 +122,7 @@ function IntroPage() {
         </Title>
         
         <Subtitle>
-          Think dating needs a Bollywood sparkle or a perfect rishta match? Let's test it—as in life, there may be more than one right answer!
+          Think dating needs a Bollywood sparkle or a perfect match? Let's test it—as in life, there may be more than one right answer!
         </Subtitle>
         
         <Form onSubmit={handleSubmit}>
