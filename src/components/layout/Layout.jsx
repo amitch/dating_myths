@@ -97,6 +97,7 @@ const Layout = ({ children, title = '', showHeader = true, showFooter = true, cu
                 const domain = 'gmail.com';
                 window.location.href = `mailto:${user}@${domain}`;
               }}>Amit Chaudhary</a>
+              with ❤️ using amazing AI and open source tools
             </p>
           </Footer>
         )}

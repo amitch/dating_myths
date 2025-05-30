@@ -20,3 +20,9 @@ Post functionality checks
 
 -Have friends test it
 -Announce
+
+TBD:
+-Integration tests
+-Responsiveness testing
+-Remove unit test files
+-Remove unused files such as mandala svg, screenshot, etc

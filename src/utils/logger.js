@@ -1,13 +1,22 @@
-// Only enable logging if we're in production and have an API URL, or if explicitly enabled in development
-const API_URL = import.meta.env.VITE_API_URL;
+// Environment detection
 const IS_PRODUCTION = import.meta.env.PROD;
 const IS_DEVELOPMENT = !IS_PRODUCTION;
-const IS_LOGGING_EXPLICITLY_ENABLED = import.meta.env.VITE_ENABLE_LOGGING === 'true';
 
-// Only enable logging if:
-// 1. We're in production AND have an API URL, OR
-// 2. Logging is explicitly enabled in development
-const LOGGING_ENABLED = (IS_PRODUCTION && API_URL) || (IS_DEVELOPMENT && IS_LOGGING_EXPLICITLY_ENABLED);
+// Get the base URL for API requests
+const getApiUrl = () => {
+  if (IS_PRODUCTION) {
+    // In production, use relative URL since the API is on the same domain
+    return '/api';
+  }
+  // In development, use the VITE_API_URL if set, otherwise default to localhost
+  return import.meta.env.VITE_API_URL || 'http://localhost:3000';
+};
+
+const API_URL = getApiUrl();
+
+// Enable logging in production by default, or if explicitly enabled in development
+const IS_LOGGING_EXPLICITLY_ENABLED = import.meta.env.VITE_ENABLE_LOGGING !== 'false';
+const LOGGING_ENABLED = IS_PRODUCTION || (IS_DEVELOPMENT && IS_LOGGING_EXPLICITLY_ENABLED);
 
 // Track if we've shown the offline warning
 let hasShownWarning = false;
@@ -49,7 +58,7 @@ export const logEvent = async (eventType, data = {}) => {
 
   try {
     // Use fetch instead of axios to reduce bundle size
-    const response = await fetch(`${API_URL}/api/logs`, {
+    const response = await fetch(`${API_URL}/logs`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
