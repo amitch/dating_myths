@@ -73,7 +73,7 @@ export const Checkbox = ({ checked = false, onChange, label, id, name, ...props 
               height="14" 
               viewBox="0 0 24 24" 
               fill="none" 
-              stroke="white" 
+              stroke="black"
               strokeWidth="3"
             >
               <polyline points="20 6 9 17 4 12"></polyline>
